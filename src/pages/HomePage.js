@@ -455,6 +455,7 @@ function Navbar() {
             </Typography>
 
           <Grid sx={{ flexGrow: 1 }} />
+          
           <IconButton color="inherit" onClick={handleColorPickerToggle}>
             <PaletteIcon />
           </IconButton>

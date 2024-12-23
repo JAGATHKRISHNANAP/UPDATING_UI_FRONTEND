@@ -3,6 +3,9 @@ import EditDashbordSidebar from "../../components/edit/editDashbordSidebar";
 import { Box, Grid, Paper, styled } from "@mui/material";
 import DashboardCharts from "../../components/dashbord-Elements/dashbord-chartComponent";
 import InputFields from "../../components/edit/InputFields";
+import HomePage from '../HomePage';
+
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -46,6 +49,7 @@ function EditDashboard() {
       {/* <Box sx={{ flexGrow: 1, minHeight: '100vh', paddingBottom: '80px' }}>  */}
         {/* Padding bottom added to avoid overlap with fixed sidebar */}
         <Grid container spacing={2} wrap="wrap" style={{marginTop:'60px'}}>
+        <HomePage/>
           <Grid item xs={12} md={10}>
             <InputFields />
           </Grid>
