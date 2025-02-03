@@ -51,6 +51,21 @@ export const AiMLchartData = async () => {
 };
 
 
+export const fetchTableDetailsAPI = async (databaseName, selectedTable) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/api/fetchTableDetails`, {
+      params: {
+        databaseName,
+        selectedTable
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching table details:', error);
+    throw error;
+  }
+};
+
 
 export const uploadAudioApi = async (file) => {
   const formData = new FormData();

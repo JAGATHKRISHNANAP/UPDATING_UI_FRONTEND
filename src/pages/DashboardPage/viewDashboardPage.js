@@ -1,30 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Paper, styled } from "@mui/material";
+import { Box, Grid} from "@mui/material";
 import ViewDashboardSidebar from "../../components/dashboardViewCharts/ViewDashboardSidebar";
 import DashboardDroppableArea from "../../components/dashboardViewCharts/dashboardDroppableArea";
 import HomePage from '../HomePage';
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
-
 function DashboardView() {
-  const [chartData, setChartData] = useState(null);
-  const [checkedOptions, setCheckedOptions] = useState([]);
-  console.log("1-----", checkedOptions);
-
-  if (chartData && chartData[10] && Array.isArray(chartData[10])) {
-    setCheckedOptions(chartData[10]);
-  }
-
-  useEffect(() => {
-    console.log("checkedOptions:", checkedOptions);
-  }, [checkedOptions]);
-
   return (
     <div className="App">
       <Box sx={{ flexGrow: 1 }}>

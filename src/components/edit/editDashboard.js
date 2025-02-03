@@ -3,13 +3,22 @@ import EditDashbordSidebar from "./editDashbordSidebar";
 import { Box, Checkbox, FormControl, Grid, InputLabel, List, ListItemButton, ListItemIcon, NativeSelect, Paper, styled } from "@mui/material";
 import DashboardCharts from "../dashbord-Elements/dashbord-chartComponent";
 import InputFields from "./InputFields";
+// const Item = styled(Paper)(({ theme }) => ({
+//     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//     ...theme.typography.body2,
+//     padding: theme.spacing(1),
+//     textAlign: 'center',
+//     color: theme.palette.text.secondary,
+//   }));
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  }));
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  border: `1px solid ${theme.palette.divider}`, // Add border
+  borderRadius: theme.shape.borderRadius, // Optional for rounded corners
+}));
 
 function EditDashboard() {
     const [chartData, setChartData] = useState(null);

@@ -7,12 +7,21 @@ import HomePage from '../HomePage';
 
 
 
+// const Item = styled(Paper)(({ theme }) => ({
+//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//   ...theme.typography.body2,
+//   padding: theme.spacing(1),
+//   textAlign: 'center',
+//   color: theme.palette.text.secondary,
+// }));
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
+  border: `1px solid ${theme.palette.divider}`, // Add border
+  borderRadius: theme.shape.borderRadius, // Optional for rounded corners
 }));
 
 // Fix the sidebar at the bottom of the screen and make it horizontal

@@ -440,16 +440,16 @@ function Navbar() {
   };
 
   return (
-    <Grid sx={{ display: 'flex', flexDirection: 'column', minHeight: '10vh' }}>
+    <Grid sx={{ display: 'flex', flexDirection: 'column', minHeight: '8vh' }}>
       <CssBaseline />
       <MuiAppBar position="fixed" open={false} sx={{ height: '40px', display: 'flex', justifyContent: 'center', backgroundColor: appBarColor }}>
         <Toolbar>
 
-            <IconButton color="inherit" aria-label="open drawer" edge="start" sx={{ marginRight: 5 }}>
+            <IconButton color="inherit" aria-label="open drawer" edge="start" sx={{ marginRight: 0 }}>
               <MenuIcon />
             </IconButton>
 
-            <Typography variant="body2" sx={{ height: '10px', marginLeft: 2, display: 'flex', alignItems: 'center' }}>
+            <Typography variant="body2" sx={{ height: '10px', display: 'flex', alignItems: 'center' }}>
               <Avatar src="/broken-image.jpg" sx={{ width: '30px', height: '30px', border: '2px solid white', backgroundColor: appBarColor, color: 'white', marginRight: 1 }} />
               Hello, {username}
             </Typography>
@@ -462,10 +462,18 @@ function Navbar() {
         </Toolbar>
       </MuiAppBar>
       {showColorPicker && (
-          <Box sx={{ position: 'absolute', top: '50px', right: '10px', zIndex: 1000 }}>
-            <SketchPicker color={appBarColor} onChangeComplete={handleColorChange} />
-          </Box>
-        )}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50px',
+            right: '10px',
+            zIndex: 9999, // Set to a very high value to ensure it's on top
+          }}
+        >
+          <SketchPicker color={appBarColor} onChangeComplete={handleColorChange} />
+        </Box>
+      )}
+
 
 <ShowSecondNavbar/>
 

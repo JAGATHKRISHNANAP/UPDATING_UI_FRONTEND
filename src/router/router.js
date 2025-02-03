@@ -91,8 +91,8 @@ import ExcelUpload from '../pages/UploadPage/ExcelUploadPage';
 import CsvUpload from '../pages/UploadPage/CsvUploadPage';
 import AudioFile from '../pages/UploadPage/AudioUploadPage';
 import EditDashboard from '../pages/EditChartPage/EditChartPage';
-import Charts from '../components/viewChart/displayChart';
-import LoadExcelFile from '../components/load/LoadExcelFile';
+import Charts from '../pages/designDashboard/designDashboard';
+import LoadData from '../pages/LoadDataPage/LoadDataPage';
 import Chartsview from '../components/viewChart/chartsView';
 import LoginPage from '../pages/loginPage/login';  
 import SignIn from '../pages/loginPage/signup';
@@ -103,7 +103,7 @@ import IndexHomePage from '../pages/indexhomepage';
 import JsonUpload from '../pages/UploadPage/JsonUploadPage';
 import CustomDataSource from '../pages/UploadPage/customDataSource';
 import User_input from '../components/user/user_input';
-import Dashboard from '../components/dashbord-Elements/Dashboard';
+import DesignChart from '../pages/designChart/designChart';
 const AppRouter = () => {
   return (
     <Routes>
@@ -116,14 +116,15 @@ const AppRouter = () => {
       <Route path="/create_dashboard" element={<Charts />} />
       <Route path="/Charts_view" element={<Chartsview />} />
       <Route path="/dashboard_view" element={<DashboardView />} />
-      <Route path="/load_data" element={<LoadExcelFile />} />
+      <Route path="/load_data" element={<LoadData />} />
+      <Route path="/create_charts" element={<DesignChart />} />
       <Route path="/home" element={<IndexHomePage />} />
       <Route path="/employeehome/:selectedCompany/:user_id" element={<HomePage />} />
       {/* <Route path="/login" element={<LoginPage />} /> */}
       <Route path="/" element={<LoginPage />} />
       <Route path="/signClient" element={<SignIn />} />
       <Route path="/clientEmpData" element={<ClientLoginHome />} />
-      <Route path="/Chart_design" element={<Dashboard/>} />
+      {/* <Route path="/Chart_design" element={<Dashboard/>} /> */}
       <Route path="/user_input" element={<User_input/>} />  
 
     </Routes>

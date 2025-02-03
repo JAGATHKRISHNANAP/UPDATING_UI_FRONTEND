@@ -124,17 +124,25 @@ const SecondNavbar = () => {
             aria-haspopup="true"
             aria-expanded={openMenu ? 'true' : undefined}
             onClick={handleMenuClick}
-            ref={buttonRef}
             sx={{
-              backgroundColor: activeRoute === '/excel_upload' || activeRoute === '/csv_upload' || activeRoute === '/Audio_upload' ? '#c5c5c9' : 'inherit',
+              backgroundColor: location.pathname === '/excel_upload' || location.pathname === '/csv_upload' ? '#c5c5c9' : 'inherit',
               maxWidth: '150px',
               alignItems: 'center',
               color: 'inherit',
             }}
           >
-            <ListItemIcon sx={{ display: 'flex', justifyContent: 'center', width: '150px', color: '#000000' }}>
-              Data Source <ArrowDropDownCircleIcon sx={{ color: appBarColor }} />
-            </ListItemIcon>
+          <ListItemIcon
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              width: '150px',
+              color: '#000000',
+              textTransform: 'none', // Prevent all caps
+            }}
+          >
+            Data Source <ArrowDropDownCircleIcon sx={{ color: appBarColor }} />
+          </ListItemIcon>
+
           </Button>
           <Menu
             id="data-source-menu"
@@ -165,6 +173,28 @@ const SecondNavbar = () => {
               <DashboardCustomizeIcon style={{ marginRight: 8, fontSize: 20 }} /> CustomJoin
             </MenuItem>
           </Menu>
+          <Button
+onClick={() => handleNavigation('/load_data')}
+    sx={{
+      backgroundColor: location.pathname === '/load_data' ? '#c5c5c9' : 'inherit',
+      maxWidth: '150px',
+      alignItems: 'center',
+      color: 'inherit',
+    }}
+  >
+                <ListItemIcon
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '150px',
+                justifyContent: 'center',
+                color: '#000000',
+                textTransform: 'none', 
+              }}
+            >
+      Data Table 
+    </ListItemIcon>
+  </Button>
 
           <Button
             aria-controls={openDesignMenu ? 'design-menu' : undefined}
@@ -174,7 +204,7 @@ const SecondNavbar = () => {
             sx={{
               backgroundColor:
                 location.pathname === '/load_data' ||
-                location.pathname === '/Create_Dashboard'
+                location.pathname === '/Chart_design' 
                   ? '#c5c5c9'
                   : 'inherit',
               alignItems: 'center',
@@ -187,6 +217,7 @@ const SecondNavbar = () => {
                 width: '150px',
                 justifyContent: 'center',
                 color: '#000000',
+                textTransform: 'none', 
               }}
             >
               Design <ArrowDropDownCircleIcon sx={{ color: appBarColor }} />
@@ -205,7 +236,7 @@ const SecondNavbar = () => {
               },
             }}
           >
-            <MenuItem onClick={() => handleNavigation('/load_data')}>
+            <MenuItem  onClick={() => handleNavigation('/load_data')}>
               Load Data
             </MenuItem>
             <MenuItem onClick={() => handleNavigation('/Create_Dashboard')}>
@@ -220,7 +251,14 @@ const SecondNavbar = () => {
               alignItems: 'center',
             }}
           >
-            <ListItemIcon sx={{ display: 'flex', alignItems: 'center', width: '150px', justifyContent: 'center', color: '#000000' }}>
+            <ListItemIcon               sx={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '150px',
+                justifyContent: 'center',
+                color: '#000000',
+                textTransform: 'none', 
+              }}>
               edit
             </ListItemIcon>
           </Button>
@@ -231,13 +269,20 @@ const SecondNavbar = () => {
             aria-expanded={openViewMenu ? 'true' : undefined}
             onClick={handleViewMenuClick}
             sx={{
-              backgroundColor: location.pathname === '/Create_Dashboard' || location.pathname === '/dashboard_view' ? '#c5c5c9' : 'inherit',
+              backgroundColor: location.pathname === '/Charts_view' || location.pathname === '/dashboard_view' ? '#c5c5c9' : 'inherit',
               maxWidth: '150px',
               alignItems: 'center',
               color: 'inherit',
             }}
           >
-            <ListItemIcon sx={{ display: 'flex', justifyContent: 'center', width: '150px', color: '#000000' }}>
+            <ListItemIcon               sx={{
+                display: 'flex',
+                alignItems: 'center',
+                width: '150px',
+                justifyContent: 'center',
+                color: '#000000',
+                textTransform: 'none', 
+              }}>
               View <ArrowDropDownCircleIcon sx={{ color: appBarColor }} />
             </ListItemIcon>
           </Button>
@@ -259,12 +304,6 @@ const SecondNavbar = () => {
             <MenuItem onClick={() => handleNavigation('/dashboard_view')}>Dashboard</MenuItem>
           </Menu>
         </ButtonGroup>
-
-        {showColorPicker && (
-          <Box sx={{ position: 'absolute', top: '50px', right: '10px', zIndex: 0 }}>
-            <SketchPicker color={appBarColor} onChangeComplete={handleColorChange} />
-          </Box>
-        )}
       </Toolbar>
     </AppBar>
   );

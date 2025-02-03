@@ -1,7 +1,7 @@
 import React from "react";
 
 import {  Grid} from "@mui/material";
-import LoadData from '../../components/load/LoadData';
+import DesignDashboard from '../../components/viewChart/displayChart';
 import HomePage from '../HomePage';
 
 
@@ -10,13 +10,11 @@ function LoadDataPage() {
     <div className="App">
         <HomePage/>
           <Grid item xs={12} md={10}>
-            <LoadData />
+            <DesignDashboard />
           </Grid>
     </div>
   );
 }
 
 export default LoadDataPage;
-
-
 

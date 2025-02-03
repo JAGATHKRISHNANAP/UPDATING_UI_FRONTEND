@@ -23,14 +23,14 @@ const DroppableArea = ({ onDrop, children }) => {
         backgroundColor: 'white',
         padding: '10px',
         border: isOver ? '2px solid #007bff' : '2px solid #ccc',  // Blue border on hover
-        minHeight: '80vh',
+        minHeight: '87vh',
         display: 'flex',
         flexWrap: 'wrap',
         gap: '10px',
         overflow: 'auto', // Set overflow to 'auto' to allow scrolling if the content exceeds the container
         borderRadius: '10px',
         maxHeight: '100%', // Set maximum height to container bounds
-        width: '100%',
+        // width: '100%',
       }}
     >
       {React.Children.map(children, child =>

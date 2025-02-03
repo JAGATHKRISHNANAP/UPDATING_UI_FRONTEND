@@ -400,12 +400,20 @@ import DashboardCharts from './dashbord-chartComponent';
 import DuealChartInputsss from '../charts/duealChartInput';
 import ChartColor from '../charts/color';
 import ChartRenderer from './ChartRenderer'; 
-import HomePage from '../../pages/HomePage';
 
 import {
   generateChart
 } from '../../features/Dashboard-Slice/chartSlice';
 import { saveDataToDatabase } from '../../utils/api';
+
+
+// const Item = styled(Paper)(({ theme }) => ({
+//   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//   ...theme.typography.body2,
+//   padding: theme.spacing(1),
+//   textAlign: 'center',
+//   color: theme.palette.text.secondary,
+// }));
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -414,8 +422,9 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
+  border: `1px solid ${theme.palette.divider}`, // Add border
+  borderRadius: theme.shape.borderRadius, // Optional for rounded corners
 }));
-
 
 
 function Dashboard() {
@@ -490,9 +499,6 @@ function Dashboard() {
   return (
     <div className="App">
         <Grid container  wrap="wrap" spacing={1.5} >
-        <Grid item xs={12} md={12}>
-          <HomePage/>
-          </Grid>
           <Grid item xs={12} md={1.5}>
             <Item>
             <DashboardTableDetails />
