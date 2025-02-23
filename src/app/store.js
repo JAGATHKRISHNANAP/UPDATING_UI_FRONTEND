@@ -34,7 +34,7 @@ import  signupReducer  from '../features/signUp/signUpSlice';
 // import fetchedChartDataReducer from '../features/fetchChartDataForView/fetchChartDataSlice';
 
 import loginReducer from '../features/login/loginSlice';
-
+import ChartPossitionReducer from '../features/viewDashboardSlice/dashboardpossitionslice';
 
 const store = configureStore({
   reducer: {
@@ -78,6 +78,7 @@ const store = configureStore({
 
     calculation: calculationReducer,
     signup: signupReducer,
+    viewchartspostion: ChartPossitionReducer,
 
     // fetchedChartData: fetchedChartDataReducer,
   },

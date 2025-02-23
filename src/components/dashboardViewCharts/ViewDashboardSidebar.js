@@ -151,28 +151,134 @@ function ViewDashboardSidebar() {
   }, [dispatch, user_id]);
 
 
-  const handleChartButtonClick = (chartNumber, chartName) => {
-    dispatch(fetchDashboardData(chartName))
-      .unwrap()
-      .then((response) => {
-        response.chart_datas.forEach((chartData) => {
-          if (chartData.chart_type === "singleValueChart") {
-            dispatch(addTextChart(chartData));
-          }
-        });
+  // const handleChartButtonClick = (chartNumber, chartName) => {
+  //   console.log("Fetching chart data for:", chartName);
+  //   dispatch(fetchDashboardData(chartName))
+  //     .unwrap()
+  //     .then((response) => {
+  //       console.log("API Response:", response); 
+  //       response.chart_datas.forEach((chartData) => {
+  //         if (chartData.chart_type === "singleValueChart") {
+  //           dispatch(addTextChart(chartData));
+  //         }
+  //       });
 
-        const filteredChartData = response.chart_datas.filter(
-          (chartData) => chartData.chart_type !== "singleValueChart"
-        );
-        filteredChartData.forEach((chartData, index) => {
-          dispatch(addChartData({ ...chartData, index }));
-        });
-      })
-      .catch((err) => {
-        console.error("Error fetching chart data:", err);
-      });
-  };
+  //       const filteredChartData = response.chart_datas.filter(
+  //         (chartData) => chartData.chart_type !== "singleValueChart"
+  //       );
+  //       filteredChartData.forEach((chartData, index) => {
+  //         dispatch(addChartData({ ...chartData, index }));
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error fetching chart data:", err);
+  //     });
+  // };
   
+  const handleChartButtonClick = (chartNumber, chartName) => {
+    console.log("Fetching chart data for:", chartName);
+    dispatch(fetchDashboardData(chartName))
+        .unwrap()
+        .then((response) => {
+            console.log("API Response:", response);
+            console.log("Raw chart position data:", response.data[5]);
+            console.log("Raw chart chart type data:", response.data[6]);
+
+            // Extract chart positions and chart types
+            let chartPositions = [];
+            let chartTypes = [];
+            try {
+                const rawPositionData = response.data[5];
+                const cleanedPositionData = rawPositionData.replace(/'/g, '"');
+                chartPositions = JSON.parse(cleanedPositionData);
+
+                const rawChartTypeData = response.data[6];
+                const cleanedChartTypeData = rawChartTypeData.replace(/'/g, '"');
+                chartTypes = JSON.parse(cleanedChartTypeData);
+            } catch (error) {
+                console.error("Error parsing chart data:", error);
+                return;
+            }
+
+            // Create a mapping of chartType to position
+            const positionMap = chartTypes.reduce((map, type, index) => {
+                map[type] = chartPositions[index];
+                return map;
+            }, {});
+
+            console.log("Chart position map:", positionMap);
+
+            // Handle single value charts
+            response.chart_datas.forEach((chartData) => {
+                if (chartData.chart_type === "singleValueChart") {
+                    dispatch(addTextChart(chartData));
+                }
+            });
+
+            // Handle other charts with positions based on chart_type
+            const filteredChartData = response.chart_datas.filter(
+                (chartData) => chartData.chart_type !== "singleValueChart"
+            );
+
+            filteredChartData.forEach((chartData, index) => {
+                const position = positionMap[chartData.chart_type] || { x: 0, y: 0 };
+                dispatch(addChartData({ ...chartData, position, index }));
+            });
+        })
+        .catch((err) => {
+            console.error("Error fetching chart data:", err);
+        });
+};
+
+
+
+
+//   const handleChartButtonClick = (chartNumber, chartName) => {
+//     console.log("Fetching chart data for:", chartName);
+//     dispatch(fetchDashboardData(chartName))
+//         .unwrap()
+//         .then((response) => {
+//             console.log("API Response:", response); 
+//             console.log("Raw chart position data:", response.data[5]);
+//             console.log("Raw chart chart type data:", response.data[6]);
+
+//             // Extract chart positions from response.data[5]
+//             let chartPositions = [];
+//             try {
+//                 const rawData = response.data[5];
+//                 const cleanedData = rawData.replace(/'/g, '"');  // Replace all single quotes with double quotes
+//                 chartPositions = JSON.parse(cleanedData);
+//                 console.log("Parsed chart positions:", chartPositions);
+//             } catch (error) {
+//                 console.error("Error parsing chart positions:", error);
+//             }
+
+//             // Handle single value charts
+//             response.chart_datas.forEach((chartData) => {
+//                 if (chartData.chart_type === "singleValueChart") {
+//                     dispatch(addTextChart(chartData));
+//                 }
+//             });
+
+//             // Handle other charts with positions
+//             const filteredChartData = response.chart_datas.filter(
+//                 (chartData) => chartData.chart_type !== "singleValueChart"
+//             );
+
+//             filteredChartData.forEach((chartData, index) => {
+//                 const position = chartPositions[index] || { x: 0, y: 0 };
+//                 dispatch(addChartData({ ...chartData, position, index }));
+//             });
+//         })
+//         .catch((err) => {
+//             console.error("Error fetching chart data:", err);
+//         });
+// };
+
+
+
+
+
   const handleContextMenu = (event, chartName, index) => {
     event.preventDefault(); // Prevent default context menu
     setAnchorEl({
