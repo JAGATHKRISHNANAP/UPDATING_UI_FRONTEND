@@ -34,6 +34,8 @@ import  signupReducer  from '../features/signUp/signUpSlice';
 // import fetchedChartDataReducer from '../features/fetchChartDataForView/fetchChartDataSlice';
 
 import loginReducer from '../features/login/loginSlice';
+
+import aichartReducer from '../features/aiCharts/aiChartSlice'; 
 import ChartPossitionReducer from '../features/viewDashboardSlice/dashboardpossitionslice';
 
 const store = configureStore({
@@ -78,6 +80,7 @@ const store = configureStore({
 
     calculation: calculationReducer,
     signup: signupReducer,
+    aicharts: aichartReducer,
     viewchartspostion: ChartPossitionReducer,
 
     // fetchedChartData: fetchedChartDataReducer,

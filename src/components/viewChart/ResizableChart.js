@@ -892,10 +892,14 @@ import AnimatedTreemap from '../ChartViews/animatedTreeMapView';
 import DualAxisChart from '../ChartViews/duelAxisChartView';
 import HierarchialBarChart from '../ChartViews/hierarchialBarChartView';
 import MapChart from '../ChartViews/mapChartView';
-// import SingleValueChart from '../ChartViews/singleValueChartView';
-// import SampleAiTestChart  from '../ChartViews/sampleAiTestChartView'; 
-// import AiMlChartData from '../ChartViews/AiMLChartsView';
-// import TreeHierarchyView from '../ChartViews/treeHierarchyView'; 
+import SingleValueChart from '../ChartViews/singleValueChartView';
+
+
+
+
+import SampleAiTestChart  from '../ChartViews/sampleAiTestChartView'; 
+import AiMlChartData from '../ChartViews/AiMLChartsView';
+import TreeHierarchyView from '../ChartViews/treeHierarchyView'; 
 
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -904,16 +908,51 @@ import { addTextChart, addChartData, removeChartData, updateSelectedCategory,upd
 
 const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePosition }) => {
   const [tableModalOpen, setTableModalOpen] = useState(false);
+  const [width, setWidth] = useState(data.width);
+  const [height, setHeight] = useState(data.height);
+
+
   const [result, setResult] = useState(null);
+  const [hierarchy,setHierarchy]=useState(null);
+  const [hierarchyData,setHierarchyData]=useState(null);
+  const [aiChartData,setAiChartData]=useState(null);
+  const [aiMlChartData,setAiMLChartData]=useState(null);
+  const [fetchedData, setFetchedData] = useState(null);
+
 
   const dispatch = useDispatch();
   const dataFetchedRef = useRef(false);
+
+
+
+
+  
+  
+  const isDashboard = context === "dashboard";
+  const minWidth = isDashboard ? 200 : 800;
+  const minHeight = isDashboard ? 50 : 300;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const chart_id = data[0];
   const text_y_xis = data[2];
   const text_y_aggregate = data[4];
   const text_y_table = [data[1]];
   const text_y_database = data[10];
+  const heading = data[7];
   const chartDataFromStore = useSelector((state) =>
     state.viewcharts.charts.find((chart) => chart.chart_id === chart_id)
   );
@@ -927,22 +966,50 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
       const textChartData = { fetchedData, chart_id };
       dispatch(addTextChart(textChartData));
       setResult(fetchedData.total_x_axis);
+      setFetchedData(fetchedData);
+      
     } catch (error) {
       console.error("Error sending data to backend", error);
     }
   };
   
 
+  // useEffect(() => {
+  //   updateChartDetails(data.chartName, { });
+  //   sendChartDetailsToBackend();
+  //   sendDataToBackend();
+  // }, []);
+
   useEffect(() => {
-    updateChartDetails(data.chartName, { });
+    updateChartDetails(data.chartName, { width, height });
     sendChartDetailsToBackend();
     sendDataToBackend();
-  }, []);
+  }, [width, height]);
 
+  const handleResize = (e, { size }) => {
+    if (size.width !== width || size.height !== height) {
+      setWidth(size.width);
+      setHeight(size.height);
+      updateChartDetails(data.chartName, { width: size.width, height: size.height });
+    }
+  };
 
   const sendChartDetailsToBackend = async () => {
     try {
+      // const response = await sendChartDetails(data);
+      // const { categories, values, series1, series2 } = response;
       const response = await sendChartDetails(data);
+      if (data[5] === 'treeHierarchy') {
+        setHierarchyData(response["data frame"]);
+        setHierarchy(response["x_axis"]);
+      }
+      if (data[5] === 'sampleAitestChart') {
+        setAiChartData(response['histogram_details']);
+      }
+      if (data[5] === 'AiCharts') {
+        console.log("response['histogram_details']",response['histogram_details'])
+        setAiMLChartData(response['histogram_details']);
+      }
       const { categories, values, series1, series2 } = response;
       if (categories) {
         if (values && categories.length === values.length) {
@@ -1071,14 +1138,14 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
         return <AnimatedTreemap categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} />;
             }
           break;
-      // case 'sampleAitestChart':
-      //   return <SampleAiTestChart data={aiChartData} />;
+      case 'sampleAitestChart':
+        return <SampleAiTestChart data={aiChartData} />;
 
-      //   case 'AiCharts':
-      //     return <AiMlChartData data={aiMlChartData} />;
-      // case 'treeHierarchy':
-      //   return <TreeHierarchyView x_axis={hierarchy} treeData={hierarchyData} />;
-      //   // break;  
+        case 'AiCharts':
+          return <AiMlChartData data={aiMlChartData} />;
+      case 'treeHierarchy':
+        return <TreeHierarchyView x_axis={hierarchy} treeData={hierarchyData} />;
+        // break;  
         case 'scatter':
             if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
               return <ScatterChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
@@ -1098,29 +1165,20 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
 
         
       case 'singleValueChart':
-        // if (!result) {
-        //   // sendDataToBackend(); // Manually trigger the fetch
-        // }
-        // return (
-        //   <SingleValueChart
-        //     width={width}
-        //     heading={heading}
-        //     result={result}
-        //     fetchedData={fetchedData}
-        //     handleResize={handleResize}
-        //   />
-        // );
-        // return (
-        //             <SingleValueChart
-        //               width={width}
-        //               heading={heading}
-        //               result={result}
-        //               fetchedData={fetchedData}
-        //               handleResize={handleResize}
-        //               minWidth={minWidth}
-        //               minHeight={minHeight} // Pass minimum constraints
-        //             />
-        //           );
+        if (!result) {
+          // sendDataToBackend(); // Manually trigger the fetch
+        }
+        return (
+          <SingleValueChart
+            width={width}
+            heading={heading}
+            result={result}
+            fetchedData={fetchedData}
+            handleResize={handleResize}
+            minWidth={minWidth}
+            minHeight={minHeight} // Pass minimum constraints
+          />
+        );
       default:
         return <div>No chart available</div>;
     }

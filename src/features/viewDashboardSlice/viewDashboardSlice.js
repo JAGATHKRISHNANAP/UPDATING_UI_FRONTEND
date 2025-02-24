@@ -1,8 +1,93 @@
 
+// import { createSlice } from '@reduxjs/toolkit';
+
+// const initialState = {
+//   textChart:[],
+//   dashboard_charts: [],
+//   selectedCategory: null,
+//   selectedCategory_xaxis: null,
+//   chartStatus: false,
+// };
+
+// const viewChartSlice = createSlice({
+//   name: 'viewdashboard',
+//   initialState,
+//   reducers: {
+//     addTextChart:(state,action)=>{
+//       state.textChart.push(action.payload);
+//     },
+//     addChartData: (state, action) => {
+//       state.dashboard_charts.push(action.payload);
+//     },
+//     updateChartData: (state, action) => {
+//       const { chart_id, categories, values } = action.payload;
+
+//       // Find the chart by chart_id
+//       const chart = state.charts.find(chart => chart.chart_id === chart_id);
+      
+//       // If chart exists, update its categories and values
+//       if (chart) {
+//         chart.categories = categories;
+//         chart.values = values;
+//       }
+//     },
+//     removeChartData: (state, action) => {
+//       state.charts = state.charts.filter(chart => chart.chart_id !== action.payload);
+//     },
+//     updateSelectedCategory: (state, action) => {
+//       state.selectedCategory = action.payload;
+//     },
+//     setChartStatus: (state, action) => {
+//       state.chartStatus = action.payload;
+//     },
+//     updateSelectedCategory_xaxis: (state, action) => {
+//       state.selectedCategory_xaxis = action.payload;
+//     },
+    
+//   }
+// });
+
+// export const {
+//   addTextChart,
+//   addChartData,
+//   updateChartData,
+//   removeChartData,
+//   updateSelectedCategory,
+//   setChartStatus,
+//   updateSelectedCategory_xaxis
+// } = viewChartSlice.actions;
+
+// export default viewChartSlice.reducer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  textChart:[],
+  textChart: [],
   dashboard_charts: [],
   selectedCategory: null,
   selectedCategory_xaxis: null,
@@ -13,7 +98,7 @@ const viewChartSlice = createSlice({
   name: 'viewdashboard',
   initialState,
   reducers: {
-    addTextChart:(state,action)=>{
+    addTextChart: (state, action) => {
       state.textChart.push(action.payload);
     },
     addChartData: (state, action) => {
@@ -23,7 +108,7 @@ const viewChartSlice = createSlice({
       const { chart_id, categories, values } = action.payload;
 
       // Find the chart by chart_id
-      const chart = state.charts.find(chart => chart.chart_id === chart_id);
+      const chart = state.dashboard_charts.find(chart => chart.chart_id === chart_id);
       
       // If chart exists, update its categories and values
       if (chart) {
@@ -32,7 +117,7 @@ const viewChartSlice = createSlice({
       }
     },
     removeChartData: (state, action) => {
-      state.charts = state.charts.filter(chart => chart.chart_id !== action.payload);
+      state.dashboard_charts = state.dashboard_charts.filter(chart => chart.chart_id !== action.payload);
     },
     updateSelectedCategory: (state, action) => {
       state.selectedCategory = action.payload;
@@ -42,6 +127,10 @@ const viewChartSlice = createSlice({
     },
     updateSelectedCategory_xaxis: (state, action) => {
       state.selectedCategory_xaxis = action.payload;
+    },
+    clearDashboard: (state) => {
+      state.dashboard_charts = [];
+      state.textChart = [];
     },
   }
 });
@@ -53,12 +142,8 @@ export const {
   removeChartData,
   updateSelectedCategory,
   setChartStatus,
-  updateSelectedCategory_xaxis
+  updateSelectedCategory_xaxis,
+  clearDashboard
 } = viewChartSlice.actions;
 
 export default viewChartSlice.reducer;
-
-
-
-
-

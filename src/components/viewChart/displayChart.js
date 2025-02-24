@@ -433,9 +433,34 @@ function Charts() {
     shallowEqual
   );
 
+  // useEffect(() => {
+  //   console.log("Updated ChartPositions:", ChartPossition);
+  // }, [ChartPossition]);
   useEffect(() => {
     console.log("Updated ChartPositions:", ChartPossition);
+  
+    // Update chart data whenever ChartPossition changes
+    setChartData((prevData) =>
+      prevData.map((chartItem) => {
+        const matchedPosition = ChartPossition.find(
+          (pos) => pos.chartName === chartItem.chartName
+        );
+  
+        if (matchedPosition) {
+          return {
+            ...chartItem,
+            position: {
+              x: matchedPosition.x,
+              y: matchedPosition.y,
+            },
+          };
+        }
+  
+        return chartItem;
+      })
+    );
   }, [ChartPossition]);
+  
   
   console.log("ChartPossition", ChartPossition);
 
@@ -517,42 +542,65 @@ function Charts() {
   //     return updatedData;
   //   });
   // }, []);
+  
 
+  // const updateChartDetails = useCallback(
+  //   (chartName, newDetails) => {
+  //     // 1. Find the matching position from ChartPossition
+  //     const matchedPosition = ChartPossition.find(
+  //       (pos) => pos.chartName === chartName
+  //     );
+  
+  //     // Optional: if not found, you could early-return or handle it differently
+  //     if (!matchedPosition) return;
+  
+  //     // 2. Use setChartData to update the relevant chart
+  //     setChartData((prevData) => {
+  //       return prevData.map((chartItem) => {
+  //         if (chartItem.chartName === chartName) {
+  //           // Merge existing chart data, the new details, and the matched position
+  //           return {
+  //             ...chartItem,
+  //             ...newDetails,
+  //             // If you store positions in a nested `position` object:
+  //             position: {
+  //               x: matchedPosition.x,
+  //               y: matchedPosition.y,
+  //             },
+  //             // or if you just store them at top level:
+  //             // x: matchedPosition.x,
+  //             // y: matchedPosition.y,
+  //           };
+  //         }
+  //         return chartItem;
+  //       });
+  //     });
+  //   },
+  //   [ChartPossition] // Make sure to include ChartPossition in dependency array
+  // );
   const updateChartDetails = useCallback(
     (chartName, newDetails) => {
-      // 1. Find the matching position from ChartPossition
-      const matchedPosition = ChartPossition.find(
-        (pos) => pos.chartName === chartName
-      );
-  
-      // Optional: if not found, you could early-return or handle it differently
-      if (!matchedPosition) return;
-  
-      // 2. Use setChartData to update the relevant chart
-      setChartData((prevData) => {
-        return prevData.map((chartItem) => {
+      setChartData((prevData) =>
+        prevData.map((chartItem) => {
           if (chartItem.chartName === chartName) {
-            // Merge existing chart data, the new details, and the matched position
+            const matchedPosition = ChartPossition.find(
+              (pos) => pos.chartName === chartName
+            );
+  
             return {
               ...chartItem,
               ...newDetails,
-              // If you store positions in a nested `position` object:
-              position: {
-                x: matchedPosition.x,
-                y: matchedPosition.y,
-              },
-              // or if you just store them at top level:
-              // x: matchedPosition.x,
-              // y: matchedPosition.y,
+              position: matchedPosition
+                ? { x: matchedPosition.x, y: matchedPosition.y }
+                : chartItem.position,
             };
           }
           return chartItem;
-        });
-      });
+        })
+      );
     },
-    [ChartPossition] // Make sure to include ChartPossition in dependency array
+    [ChartPossition] // Ensure latest ChartPossition is used
   );
-
   const handleSaveClick = () => {
     setOpenDialog(true);
   };
