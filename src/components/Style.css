@@ -103,3 +103,21 @@
     margin-top: 20px;
   }
   
+
+  /* In your CSS file or inside a styled component */
+.editdashsidebar11::-webkit-scrollbar {
+  height: 6px;
+}
+
+.editdashsidebar11::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.editdashsidebar11::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.editdashsidebar11::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

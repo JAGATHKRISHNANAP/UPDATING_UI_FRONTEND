@@ -15,6 +15,23 @@ function DashboardView() {
           </Grid>
         </Grid>
       </Box>
+  {/* <Grid container sx={{
+    width: '100%',
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    bgcolor: 'white',
+    p: 1,
+    maxHeight: '50px',
+    marginBottom: '5px',
+ 
+    overflowX: 'auto', // Enable horizontal scrolling
+    whiteSpace: 'nowrap', // Ensure content stays in a single line
+    // marginLeft: '10px',
+    marginRight: '10px',
+  }}justifyContent="center">
+    <ViewDashboardSidebar />
+  </Grid> */}
   <Grid container sx={{
     width: '100%',
     position: 'fixed',
@@ -24,9 +41,14 @@ function DashboardView() {
     p: 1,
     maxHeight: '50px',
     marginBottom: '5px',
-  }}justifyContent="center">
+    overflowX: 'auto',
+    whiteSpace: 'nowrap',
+    scrollPaddingLeft: '10px',
+    marginRight: '10px'
+}} justifyContent="center">
     <ViewDashboardSidebar />
-  </Grid>
+</Grid>
+
     </div>
   );
 }

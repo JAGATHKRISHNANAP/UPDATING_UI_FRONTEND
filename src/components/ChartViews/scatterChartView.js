@@ -163,7 +163,7 @@ const Scatter = ({ categories = [], values = [], aggregation = "Aggregation", x_
                 />
             </ResizableBox>
 
-            <button 
+            {/* <button 
                 onClick={handleFilterToggle} 
                 style={{ 
                     position: 'absolute',
@@ -185,7 +185,7 @@ const Scatter = ({ categories = [], values = [], aggregation = "Aggregation", x_
                 {isFilterActive ? 
                     <FilterAltIcon style={{ fontSize: '20px', marginRight: '5px', color: '#00000' }} onClick={handleReset} /> : 
                     <FilterAltOffIcon style={{ fontSize: '20px', marginRight: '5px', color: '#00000' }}  />} 
-            </button>
+            </button> */}
         </div>
     );
 };

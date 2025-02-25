@@ -782,33 +782,84 @@ const DroppableArea = ({ onDrop, children }) => {
     dispatch(removeChartPosition(chartName));
   };
 
+  // const [{ isOver }, drop] = useDrop(() => ({
+  //   accept: "chart",
+  //   drop: (item, monitor) => {
+  //     const offset = monitor.getClientOffset();
+  //     if (offset && droppableAreaRef.current) {
+  //       const dropX = offset.x - droppableAreaRef.current.getBoundingClientRect().left;
+  //       const dropY = offset.y - droppableAreaRef.current.getBoundingClientRect().top;
+  //       const { x, y } = checkOverlap(dropX, dropY) ? getNextAvailablePosition() : { x: dropX, y: dropY };
+  //       const newPosition = {
+  //         x,
+  //         y,
+  //         width: chartWidth,
+  //         height: chartHeight,
+  //         chartName: item?.chartName, // Ensure chartName is properly accessed
+  //       };
+  //       setPositions((prevPositions) => [
+  //         ...prevPositions,
+  //         { x, y, width: chartWidth, height: chartHeight, zIndex: highestZIndex + 1,chartName: item.chartName },
+  //       ]);
+  //       dispatch(addChartPosition(newPosition));
+  
+  //       setHighestZIndex((prev) => prev + 1);
+  //     }
+  //     onDrop(item.chartName);
+  //   },
+  //   collect: (monitor) => ({ isOver: monitor.isOver() }),
+  // }));
+
+
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "chart",
     drop: (item, monitor) => {
       const offset = monitor.getClientOffset();
-      if (offset && droppableAreaRef.current) {
-        const dropX = offset.x - droppableAreaRef.current.getBoundingClientRect().left;
-        const dropY = offset.y - droppableAreaRef.current.getBoundingClientRect().top;
-        const { x, y } = checkOverlap(dropX, dropY) ? getNextAvailablePosition() : { x: dropX, y: dropY };
-        const newPosition = {
-          x,
-          y,
-          width: chartWidth,
-          height: chartHeight,
-          chartName: item?.chartName, // Ensure chartName is properly accessed
-        };
-        setPositions((prevPositions) => [
-          ...prevPositions,
-          { x, y, width: chartWidth, height: chartHeight, zIndex: highestZIndex + 1,chartName: item.chartName },
-        ]);
-        dispatch(addChartPosition(newPosition));
   
-        setHighestZIndex((prev) => prev + 1);
+      // Check if the ref and offset exist
+      if (!offset) {
+        console.warn("Drop offset is not available.");
+        return;
       }
+  
+      if (!droppableAreaRef.current) {
+        console.warn("Droppable area ref is not available.");
+        return;
+      }
+  
+      // Safely access getBoundingClientRect
+      const droppableRect = droppableAreaRef.current?.getBoundingClientRect();
+      if (!droppableRect) {
+        console.warn("Failed to get bounding rectangle of droppable area.");
+        return;
+      }
+  
+      const dropX = offset.x - droppableRect.left;
+      const dropY = offset.y - droppableRect.top;
+  
+      const { x, y } = checkOverlap(dropX, dropY) ? getNextAvailablePosition() : { x: dropX, y: dropY };
+  
+      const newPosition = {
+        x,
+        y,
+        width: chartWidth,
+        height: chartHeight,
+        chartName: item?.chartName,
+      };
+  
+      setPositions((prevPositions) => [
+        ...prevPositions,
+        { x, y, width: chartWidth, height: chartHeight, zIndex: highestZIndex + 1, chartName: item.chartName },
+      ]);
+  
+      dispatch(addChartPosition(newPosition));
+      setHighestZIndex((prev) => prev + 1);
+  
       onDrop(item.chartName);
     },
     collect: (monitor) => ({ isOver: monitor.isOver() }),
   }));
+  
   
   const chartWidth = 350;
   const chartHeight = 400;

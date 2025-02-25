@@ -441,6 +441,7 @@ import { Box, Button, ButtonGroup ,IconButton,Dialog, DialogActions, DialogConte
 import "../Style.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { Tooltip } from "@mui/material";
 
 function ViewDashboardSidebar() {
   const dispatch = useDispatch();
@@ -451,6 +452,7 @@ function ViewDashboardSidebar() {
   const [chartToDelete, setChartToDelete] = useState(null); // State to store the chart to delete
   const [anchorEl, setAnchorEl] = useState(null); // State to manage the context menu anchor
   const user_id = localStorage.getItem("user_id"); // Fetch user ID from localStorage
+  const [activeChart, setActiveChart] = useState(null);
   
   console.log("chartData:", chartData); 
   console.log("testchartData:", testchartData);
@@ -545,6 +547,7 @@ function ViewDashboardSidebar() {
 const handleChartButtonClick = (chartNumber, chartName) => {
   console.log("Fetching chart data for:", chartName);
   dispatch(clearDashboard());
+  setActiveChart(chartName);
 
   dispatch(fetchDashboardData(chartName))
       .unwrap()
@@ -679,13 +682,13 @@ const handleChartButtonClick = (chartNumber, chartName) => {
 
   return (
     <div className="App">
-      <Box
+      {/* <Box
         className="editdashsidebar11"
         sx={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          overflowX: 'auto',
+          // overflowX: 'auto',
           whiteSpace: 'nowrap',
         }}
       >
@@ -715,7 +718,92 @@ const handleChartButtonClick = (chartNumber, chartName) => {
             </Button>
           ))}
         </ButtonGroup>
+      </Box> */}
+
+<Box
+
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: "2px",
+          backgroundColor: "white",
+          display: "flex",
+          justifyContent: "flex-start",
+          overflowY: "auto",
+          borderTop: "1px solid #768DA3",
+         
+        }}
+      >
+        {chartNamesArray.map((name, index) => (
+          // <Button
+          //   key={index + 1}
+          //   sx={{
+          //     margin: "4px",
+          //     minWidth: "90px",
+          //     maxWidth: "120px",
+          //     color: "black",
+          //     background: activeChart === name ? "grey" : "white",
+          //     justifyContent: "center",
+          //     maxHeight: "25px",
+          //     fontSize: "12px",
+          //     overflow: "hidden",
+          //     whiteSpace: "nowrap", // Ensure text stays on one line
+          //     textOverflow: "ellipsis", // Show dots for overflow
+          //     padding: "6px",
+          //     position: "relative",
+          //     display: "inline-flex",
+          //     borderRadius: "4px",
+          //     textTransform: "none",
+          //     border: "2px solid #D3D3D3",
+          //     "&:hover": { backgroundColor: "bgcolour" },
+          //   }}
+          //   onClick={() => handleChartButtonClick(index + 1, name)}
+          //   onContextMenu={(event) => handleContextMenu(event, name, index)}
+          //   disabled={activeChart === name}
+          // >
+          //   <Tooltip title={name}>
+          //     <span>{name.length > 6 ? `${name.slice(0, 6)}...` : name}</span>
+          //   </Tooltip>
+          // </Button>
+          <Tooltip title={name}>
+  <Button
+    key={index + 1}
+    sx={{
+      margin: "4px",
+      minWidth: "90px",
+      maxWidth: "120px",
+      color: "black",
+      background: activeChart === name ? "grey" : "white",
+      justifyContent: "center",
+      maxHeight: "25px",
+      fontSize: "12px",
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+      padding: "6px",
+      position: "relative",
+      display: "inline-flex",
+      borderRadius: "4px",
+      textTransform: "none",
+      border: "2px solid #D3D3D3",
+      "&:hover": { backgroundColor: "#f0f0f0" },
+    }}
+    onClick={() => handleChartButtonClick(index + 1, name)}
+    onContextMenu={(event) => handleContextMenu(event, name, index)}
+    disabled={activeChart === name}
+  >
+    {name.length > 6 ? `${name.slice(0, 6)}...` : name}
+  </Button>
+</Tooltip>
+
+
+        ))}
       </Box>
+
+
+
       <Menu
   anchorReference="anchorPosition"
   anchorPosition={
