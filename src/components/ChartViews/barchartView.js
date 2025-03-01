@@ -223,7 +223,7 @@ import { sendClickedCategory,sendaidashboardClickedCategory } from '../../utils/
 
 import { update_Ai_Charts_Datas } from '../../features/aiCharts/aiChartSlice';
 
-const BarChart = ({ categories = [], values = [], aggregation = "Aggregation", x_axis="X_axis", y_axis="Y_axis", otherChartCategories = [] }) => {
+const BarChart = ({ width = 300, height = 300, categories = [], values = [], aggregation = "Aggregation", x_axis="X_axis", y_axis="Y_axis", otherChartCategories = [] }) => {
     const dispatch = useDispatch();
 
     const charts = useSelector((state) => state.viewcharts.charts);
@@ -372,17 +372,53 @@ const handleClicked = async (event, chartContext, config) => {
     }];
 
     return (
-        <div className="chart-container" style={{ position: 'relative', width: '100%' }}>
-            <ResizableBox width={300} height={300} minConstraints={[300, 300]} maxConstraints={[1200, 800]}>
-                <Chart
-                    options={options}
-                    series={series}
-                    type="bar"
-                    width="100%"
-                    height="100%"
-                />
-            </ResizableBox>
-        </div>
+        // <div className="chart-conhfgtainer" style={{ position: 'relative', width: '100%' }}>
+        //     {/* <ResizableBox width={300} height={300} minConstraints={[300, 300]} maxConstraints={[1200, 800]}> */}
+        //     <ResizableBox width={width} height={height} minConstraints={[300, 300]} maxConstraints={[1200, 800]}>
+        //     <div style={{ width: '99%', height: '99%', border: '1px solid #ccc', borderRadius: '8px', background: '#fff' }}>
+        //         <Chart
+        //             options={options}
+        //             series={series}
+        //             type="bar"
+        //             width="100%"
+        //             height="100%"
+        //         />
+        //     </div>
+        //     </ResizableBox>
+        // </div>
+        <div
+  className="chart-container"
+  style={{
+    position: "relative",
+    width: "100%",
+    height: "100%",  // Ensure it takes full height of the parent
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  }}
+>
+  <ResizableBox
+    width={width}
+    height={height}
+    minConstraints={[300, 300]}
+    maxConstraints={[1200, 800]}
+  >
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        border: "none",  // Remove extra border
+        borderRadius: "8px",
+        padding: "10px",
+        background: "#fff",
+        overflow: "hidden",  // Ensure no overflow
+      }}
+    >
+      <Chart options={options} series={series} type="bar" width="100%" height="100%" />
+    </div>
+  </ResizableBox>
+</div>
+
     );
 };
 

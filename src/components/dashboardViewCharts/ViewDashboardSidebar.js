@@ -488,62 +488,6 @@ function ViewDashboardSidebar() {
       });
   }, [dispatch, user_id]);
 
-//   const handleChartButtonClick = (chartNumber, chartName) => {
-//     console.log("Fetching chart data for:", chartName);
-//     dispatch(clearDashboard());
-
-//     dispatch(fetchDashboardData(chartName))
-//         .unwrap()
-//         .then((response) => {
-//             console.log("API Response:", response);
-//             console.log("Raw chart position data:", response.data[5]);
-//             console.log("Raw chart chart type data:", response.data[6]);
-
-//             // Extract chart positions and chart types
-//             let chartPositions = [];
-//             let chartTypes = [];
-//             try {
-//                 const rawPositionData = response.data[5];
-//                 const cleanedPositionData = rawPositionData.replace(/'/g, '"');
-//                 chartPositions = JSON.parse(cleanedPositionData);
-
-//                 const rawChartTypeData = response.data[6];
-//                 const cleanedChartTypeData = rawChartTypeData.replace(/'/g, '"');
-//                 chartTypes = JSON.parse(cleanedChartTypeData);
-//             } catch (error) {
-//                 console.error("Error parsing chart data:", error);
-//                 return;
-//             }
-
-//             // Create a mapping of chartType to position
-//             const positionMap = chartTypes.reduce((map, type, index) => {
-//                 map[type] = chartPositions[index];
-//                 return map;
-//             }, {});
-
-//             console.log("Chart position map:", positionMap);
-
-//             // Handle single value charts
-//             response.chart_datas.forEach((chartData) => {
-//                 if (chartData.chart_type === "singleValueChart") {
-//                     dispatch(addTextChart(chartData));
-//                 }
-//             });
-
-//             // Handle other charts with positions based on chart_type
-//             const filteredChartData = response.chart_datas.filter(
-//                 (chartData) => chartData.chart_type !== "singleValueChart"
-//             );
-
-//             filteredChartData.forEach((chartData, index) => {
-//                 const position = positionMap[chartData.chart_type] || { x: 0, y: 0 };
-//                 dispatch(addChartData({ ...chartData, position, index }));
-//             });
-//         })
-//         .catch((err) => {
-//             console.error("Error fetching chart data:", err);
-//         });
-// };
 const handleChartButtonClick = (chartNumber, chartName) => {
   console.log("Fetching chart data for:", chartName);
   dispatch(clearDashboard());
@@ -551,75 +495,166 @@ const handleChartButtonClick = (chartNumber, chartName) => {
 
   dispatch(fetchDashboardData(chartName))
       .unwrap()
+      // .then((response) => {
+      //     console.log("API Response:", response);
+      //     console.log("Raw chart position data:", response.data[5]);
+      //     console.log("Raw chart sizw:", response.data[6]);
+      //     console.log("Raw chart ID data:", response.data[4]);
+
+      //     // Extract chart positions and chart IDs
+      //     let chartPositions = [];
+      //     let chart_size=[]
+      //     let chart_ids = [];
+
+      //     try {
+      //         // Handling chart position data
+      //         const rawPositionData = response.data[5];
+      //         console.log("Raw position data before parsing:", rawPositionData);
+
+      //         if (typeof rawPositionData !== "string") {
+      //             throw new Error("chart position data is not a string");
+      //         }
+
+      //         const cleanedPositionData = rawPositionData.replace(/'/g, '"');
+      //         console.log("Cleaned position data:", cleanedPositionData);
+
+      //         chartPositions = JSON.parse(cleanedPositionData);
+
+      //         // Handling chart ID data
+      //         let rawChartIdData = response.data[4];
+      //         console.log("Raw chart ID data before parsing:", rawChartIdData);
+
+      //         if (typeof rawChartIdData === "string") {
+      //             // Ensure it's formatted as an array
+      //             rawChartIdData = rawChartIdData
+      //                 .replace(/\{/g, "[") // Convert { to [
+      //                 .replace(/\}/g, "]") // Convert } to ]
+      //                 .replace(/'/g, '"'); // Ensure double quotes if needed
+
+      //             console.log("Cleaned chart ID data:", rawChartIdData);
+      //             chart_ids = JSON.parse(rawChartIdData);
+      //         } else if (Array.isArray(rawChartIdData)) {
+      //             chart_ids = rawChartIdData; // If already an array, use it directly
+      //         } else {
+      //             throw new Error("chart ID data is not a valid JSON format");
+      //         }
+      //     } catch (error) {
+      //         console.error("Error parsing chart data:", error);
+      //         return;
+      //     }
+
+      //     // Create a mapping of chart IDs to positions
+      //     const positionMap = chart_ids.reduce((map, id, index) => {
+      //         map[id] = chartPositions[index] || { x: 0, y: 0 }; // Default to {x:0, y:0} if missing
+      //         return map;
+      //     }, {});
+
+      //     console.log("Chart position map:", positionMap);
+
+      //     // Handle single value charts
+      //     response.chart_datas.forEach((chartData) => {
+      //         if (chartData.chart_type === "singleValueChart") {
+      //             dispatch(addTextChart(chartData));
+      //             // dispatch(addChartData(chartData));
+      //         }
+      //     });
+
+      //     // Handle other charts with correct positions
+      //     response.chart_datas.forEach((chartData) => {
+      //         const chartId = chartData.chart_id; // Assuming chartData has chart_id
+      //         const position = positionMap[chartId] || { x: 0, y: 0 };
+
+      //         dispatch(addChartData({ ...chartData, position }));
+      //     });
+      // })
+
       .then((response) => {
-          console.log("API Response:", response);
-          console.log("Raw chart position data:", response.data[5]);
-          console.log("Raw chart ID data:", response.data[4]);
-
-          // Extract chart positions and chart IDs
-          let chartPositions = [];
-          let chart_ids = [];
-
-          try {
-              // Handling chart position data
-              const rawPositionData = response.data[5];
-              console.log("Raw position data before parsing:", rawPositionData);
-
-              if (typeof rawPositionData !== "string") {
-                  throw new Error("chart position data is not a string");
-              }
-
-              const cleanedPositionData = rawPositionData.replace(/'/g, '"');
-              console.log("Cleaned position data:", cleanedPositionData);
-
-              chartPositions = JSON.parse(cleanedPositionData);
-
-              // Handling chart ID data
-              let rawChartIdData = response.data[4];
-              console.log("Raw chart ID data before parsing:", rawChartIdData);
-
-              if (typeof rawChartIdData === "string") {
-                  // Ensure it's formatted as an array
-                  rawChartIdData = rawChartIdData
-                      .replace(/\{/g, "[") // Convert { to [
-                      .replace(/\}/g, "]") // Convert } to ]
-                      .replace(/'/g, '"'); // Ensure double quotes if needed
-
-                  console.log("Cleaned chart ID data:", rawChartIdData);
-                  chart_ids = JSON.parse(rawChartIdData);
-              } else if (Array.isArray(rawChartIdData)) {
-                  chart_ids = rawChartIdData; // If already an array, use it directly
-              } else {
-                  throw new Error("chart ID data is not a valid JSON format");
-              }
-          } catch (error) {
-              console.error("Error parsing chart data:", error);
-              return;
-          }
-
-          // Create a mapping of chart IDs to positions
-          const positionMap = chart_ids.reduce((map, id, index) => {
-              map[id] = chartPositions[index] || { x: 0, y: 0 }; // Default to {x:0, y:0} if missing
-              return map;
-          }, {});
-
-          console.log("Chart position map:", positionMap);
-
-          // Handle single value charts
-          response.chart_datas.forEach((chartData) => {
-              if (chartData.chart_type === "singleValueChart") {
-                  dispatch(addTextChart(chartData));
-              }
-          });
-
-          // Handle other charts with correct positions
-          response.chart_datas.forEach((chartData) => {
-              const chartId = chartData.chart_id; // Assuming chartData has chart_id
-              const position = positionMap[chartId] || { x: 0, y: 0 };
-
-              dispatch(addChartData({ ...chartData, position }));
-          });
-      })
+        console.log("API Response:", response);
+        console.log("Raw chart position data:", response.data[5]);
+        console.log("Raw chart size:", response.data[6]);  // Fix typo in log
+        console.log("Raw chart ID data:", response.data[4]);
+    
+        // Extract chart positions, chart sizes, and chart IDs
+        let chartPositions = [];
+        let chartSizes = [];
+        let chart_ids = [];
+    
+        try {
+            // Handling chart position data
+            const rawPositionData = response.data[5];
+            console.log("Raw position data before parsing:", rawPositionData);
+    
+            if (typeof rawPositionData !== "string") {
+                throw new Error("chart position data is not a string");
+            }
+    
+            const cleanedPositionData = rawPositionData.replace(/'/g, '"');
+            console.log("Cleaned position data:", cleanedPositionData);
+            chartPositions = JSON.parse(cleanedPositionData);
+    
+            // Handling chart ID data
+            let rawChartIdData = response.data[4];
+            console.log("Raw chart ID data before parsing:", rawChartIdData);
+    
+            if (typeof rawChartIdData === "string") {
+                rawChartIdData = rawChartIdData
+                    .replace(/\{/g, "[") // Convert { to [
+                    .replace(/\}/g, "]") // Convert } to ]
+                    .replace(/'/g, '"'); // Ensure double quotes if needed
+    
+                console.log("Cleaned chart ID data:", rawChartIdData);
+                chart_ids = JSON.parse(rawChartIdData);
+            } else if (Array.isArray(rawChartIdData)) {
+                chart_ids = rawChartIdData;
+            } else {
+                throw new Error("chart ID data is not a valid JSON format");
+            }
+    
+            // Handling chart size data
+            let rawSizeData = response.data[6];
+            console.log("Raw chart size data before parsing:", rawSizeData);
+    
+            if (typeof rawSizeData === "string") {
+                rawSizeData = rawSizeData.replace(/'/g, '"'); // Convert single quotes to double quotes if needed
+                console.log("Cleaned chart size data:", rawSizeData);
+                chartSizes = JSON.parse(rawSizeData);
+            } else if (Array.isArray(rawSizeData)) {
+                chartSizes = rawSizeData;
+            } else {
+                throw new Error("chart size data is not a valid JSON format");
+            }
+        } catch (error) {
+            console.error("Error parsing chart data:", error);
+            return;
+        }
+    
+        // Create a mapping of chart IDs to positions and sizes
+        const chartMap = chart_ids.reduce((map, id, index) => {
+            map[id] = {
+                position: chartPositions[index] || { x: 0, y: 0 }, // Default {x:0, y:0} if missing
+                size: chartSizes[index] || { width: 300, height: 300 } // Default size if missing
+            };
+            return map;
+        }, {});
+    
+        console.log("Chart position & size map:", chartMap);
+    
+        // Handle single value charts
+        response.chart_datas.forEach((chartData) => {
+            if (chartData.chart_type === "singleValueChart") {
+                dispatch(addTextChart(chartData));
+            }
+        });
+    
+        // Handle other charts with correct positions & sizes
+        response.chart_datas.forEach((chartData) => {
+            const chartId = chartData.chart_id; // Assuming chartData has chart_id
+            const { position, size } = chartMap[chartId] || { position: { x: 0, y: 0 }, size: { width: 300, height: 300 } };
+    
+            dispatch(addChartData({ ...chartData, position, size }));
+        });
+    })
+    
       .catch((err) => {
           console.error("Error fetching chart data:", err);
       });
@@ -737,36 +772,6 @@ const handleChartButtonClick = (chartNumber, chartName) => {
         }}
       >
         {chartNamesArray.map((name, index) => (
-          // <Button
-          //   key={index + 1}
-          //   sx={{
-          //     margin: "4px",
-          //     minWidth: "90px",
-          //     maxWidth: "120px",
-          //     color: "black",
-          //     background: activeChart === name ? "grey" : "white",
-          //     justifyContent: "center",
-          //     maxHeight: "25px",
-          //     fontSize: "12px",
-          //     overflow: "hidden",
-          //     whiteSpace: "nowrap", // Ensure text stays on one line
-          //     textOverflow: "ellipsis", // Show dots for overflow
-          //     padding: "6px",
-          //     position: "relative",
-          //     display: "inline-flex",
-          //     borderRadius: "4px",
-          //     textTransform: "none",
-          //     border: "2px solid #D3D3D3",
-          //     "&:hover": { backgroundColor: "bgcolour" },
-          //   }}
-          //   onClick={() => handleChartButtonClick(index + 1, name)}
-          //   onContextMenu={(event) => handleContextMenu(event, name, index)}
-          //   disabled={activeChart === name}
-          // >
-          //   <Tooltip title={name}>
-          //     <span>{name.length > 6 ? `${name.slice(0, 6)}...` : name}</span>
-          //   </Tooltip>
-          // </Button>
           <Tooltip title={name}>
   <Button
     key={index + 1}

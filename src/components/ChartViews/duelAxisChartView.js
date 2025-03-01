@@ -2,28 +2,18 @@ import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import { ResizableBox } from 'react-resizable';
 import { useDispatch, useSelector } from 'react-redux';
-import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { updateSelectedCategory, setChartStatus, updateChartData, updateSelectedCategory_xaxis } from '../../features/ViewChartSlice/viewChartSlice';
 import { sendClickedCategory } from '../../utils/api';
 
-const DualAxisChart = ({ categories = [], series1 = [], series2 = [], aggregation = "Aggregation", x_axis = "X_axis", y_axis1 = "Y_axis_Bar", y_axis2 = "Y_axis_Line", otherChartCategories = [] }) => {
+const DualAxisChart = ({ width = 300, height = 300,categories = [], series1 = [], series2 = [], aggregation = "Aggregation", x_axis = "X_axis", y_axis1 = "Y_axis_Bar", y_axis2 = "Y_axis_Line", otherChartCategories = [] }) => {
     const dispatch = useDispatch();
-    const selectedCategory = useSelector((state) => state.viewcharts.selectedCategory);
     const [showResetButton, setShowResetButton] = useState(false);
-    const [isFilterActive, setIsFilterActive] = useState(false);
+    // const [isFilterActive, setIsFilterActive] = useState(false);
     const charts = useSelector((state) => state.viewcharts.charts);
 
     console.log("xaxis",x_axis,)
-
-    useEffect(() => {
-        // console.log("Received categories:", categories);
-        // console.log("Received series1:", series1);
-        // console.log("Received series2:", series2);
-    }, [categories, series1, series2]);
-
     const handleClicked = async (event, chartContext, config) => {
-        if (!isFilterActive) return;
+        // if (!isFilterActive) return;
 
         const clickedCategoryIndex = config.dataPointIndex;
         const clickedCategory = categories[clickedCategoryIndex];
@@ -58,15 +48,7 @@ const DualAxisChart = ({ categories = [], series1 = [], series2 = [], aggregatio
         setShowResetButton(true);
     };
 
-    const handleReset = () => {
-        dispatch(updateSelectedCategory(null));
-        dispatch(setChartStatus(false));
-        setShowResetButton(false);
-    };
 
-    const handleFilterToggle = () => {
-        setIsFilterActive(prevState => !prevState);
-    };
 
     const generateColors = (numColors) => {
         const colors = [];
@@ -183,8 +165,45 @@ const DualAxisChart = ({ categories = [], series1 = [], series2 = [], aggregatio
     ];
 
     return (
-        <div className="chart-container" style={{ position: 'relative', width: '100%' }}>
-            <ResizableBox width={400} height={300} minConstraints={[300, 300]} maxConstraints={[1200, 800]}>
+        // <div className="chart-container" style={{ position: 'relative', width: '100%' }}>
+        //     <ResizableBox width={400} height={300} minConstraints={[300, 300]} maxConstraints={[1200, 800]}>
+        //         <Chart
+        //             options={options}
+        //             series={series}
+        //             type="line"
+        //             width="100%"
+        //             height="100%"
+        //         />
+        //     </ResizableBox>
+        // </div>
+                  <div
+              className="chart-container"
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",  // Ensure it takes full height of the parent
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <ResizableBox
+                width={width}
+                height={height}
+                minConstraints={[300, 300]}
+                maxConstraints={[1200, 800]}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    border: "none",  // Remove extra border
+                    borderRadius: "8px",
+                    padding: "10px",
+                    background: "#fff",
+                    overflow: "hidden",  // Ensure no overflow
+                  }}
+                >
                 <Chart
                     options={options}
                     series={series}
@@ -192,32 +211,9 @@ const DualAxisChart = ({ categories = [], series1 = [], series2 = [], aggregatio
                     width="100%"
                     height="100%"
                 />
-            </ResizableBox>
-
-            <button 
-                onClick={handleFilterToggle} 
-                style={{ 
-                    position: 'absolute',
-                    top: '10px',
-                    right: '10px',
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    padding: '8px', 
-                    borderRadius: '50%', 
-                    background: '#1976d2', 
-                    border: 'none', 
-                    color: '#fff', 
-                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', 
-                    cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#75ACE2'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#1976d2'}
-            >
-                {isFilterActive ? 
-                    <FilterAltIcon style={{ fontSize: '20px', marginRight: '5px', color: '#00000' }} onClick={handleReset} /> : 
-                    <FilterAltOffIcon style={{ fontSize: '20px', marginRight: '5px', color: '#00000' }}  />} 
-            </button>
-        </div>
+                </div>
+              </ResizableBox>
+            </div>
     );
 };
 

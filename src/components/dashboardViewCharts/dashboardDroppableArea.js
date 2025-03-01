@@ -384,13 +384,14 @@ import DualAxisChart from '../ChartViews/duelAxisChartView';
 import AreaChart from '../ChartViews/areaChartView';
 import AnimatedTreemap from '../ChartViews/animatedTreeMapView';
 import MapViewChart from '../ChartViews/mapChartView';
-import PolarAreaChart from '../charts/polarArea';
+import PolarAreaChart from '../ChartViews/polarAreaChartView';
 import Scatter from '../ChartViews/scatterChartView';
 import TreeHierarchyView from '../ChartViews/treeHierarchyView';
 import HierarchialBarChart from '../ChartViews/hierarchialBarChartView';
 import SampleAiTestChart from '../ChartViews/sampleAiTestChartView';
 import AiMlChartData from '../ChartViews/AiMLChartsView';
 import BorderWrapper from './BorderWrapper'; // Import BorderWrapper
+import SinglevalueChart from '../ChartViews/singleValueChartView';
 
 const DroppableArea = () => {
   const droppableAreaRef = useRef(null);
@@ -434,12 +435,17 @@ const DroppableArea = () => {
                   values={chart.values}
                   x_axis={chart.x_axis}
                   y_axis={chart.y_axis}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
+
                 />
               )}
               {chart.chart_type === 'pie' && (
                 <PieChart
                   categories={chart.categories}
                   values={chart.values}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'line' && (
@@ -449,24 +455,32 @@ const DroppableArea = () => {
                   aggregation={chart.aggregate}
                   x_axis={chart.x_axis}
                   y_axis={chart.y_axis}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'area' && (
                 <AreaChart
                   categories={chart.categories}
                   values={chart.values}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'polarArea' && (
                 <PolarAreaChart
                   categories={chart.categories}
                   values={chart.values}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'scatter' && (
                 <Scatter
                   categories={chart.categories}
                   values={chart.values}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'hierarchialBarChart' && (
@@ -475,17 +489,23 @@ const DroppableArea = () => {
                   values={chart.values}
                   x_axis={chart.x_axis}
                   y_axis={chart.y_axis}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'treeHierarchy' && (
                 <TreeHierarchyView
                   x_axis={chart.x_axis}
                   treeData={chart.dataframe_dict}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'sampleAitestChart' && (
                 <SampleAiTestChart
                   data={chart.histogram_details}
+                  // width={chart.size?.width}
+                  // height={chart.size?.height}
                 />
               )}
 
@@ -498,6 +518,8 @@ const DroppableArea = () => {
                 <MapViewChart
                   categories={chart.categories}
                   values={chart.values}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'animatedTreeChart' && (
@@ -505,6 +527,8 @@ const DroppableArea = () => {
                   categories={chart.categories}
                   values={chart.values}
                   chartColor={chart.chart_color}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
                 />
               )}
               {chart.chart_type === 'duealChart' && (
@@ -516,6 +540,21 @@ const DroppableArea = () => {
                   x_axis={chart.x_axis}
                   y_axis1={chart.y_axis1}
                   y_axis2={chart.y_axis2}
+                  width={chart.size?.width}
+                  height={chart.size?.height}
+                />
+              )}
+              {chart.chart_type === 'singleValueChart' && (
+                <SinglevalueChart
+                // width={width}
+                heading={chart.chart_heading}
+                result={chart.value.total_x_axis}
+                fetchedData={chart.value}
+                width={chart.size?.width}
+                height={chart.size?.height}
+                // handleResize={handleResize}
+                // minWidth={minWidth}
+                // minHeight={minHeight}
                 />
               )}
             </BorderWrapper>

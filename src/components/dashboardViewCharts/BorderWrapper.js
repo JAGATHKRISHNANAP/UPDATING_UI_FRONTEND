@@ -3,7 +3,8 @@ import React from 'react';
 
 const BorderWrapper = ({ children }) => {
   return (
-    <div style={{ border: '2px solid #000', padding: '10px', borderRadius: '8px' }}>
+<div style={{ border: '1px solid rgba(0, 0, 0, 0.5)', borderRadius: '8px' }}>
+
       {children}
     </div>
   );

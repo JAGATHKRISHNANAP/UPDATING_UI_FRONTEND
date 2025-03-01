@@ -7,7 +7,7 @@ import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import { sendClickedCategory } from '../../utils/api';
 
-const Scatter = ({ categories = [], values = [], aggregation = "Aggregation", x_axis="X_axis", y_axis="Y_axis", otherChartCategories = [] }) => {
+const Scatter = ({width = 300, height = 300, categories = [], values = [], aggregation = "Aggregation", x_axis="X_axis", y_axis="Y_axis", otherChartCategories = [] }) => {
     const dispatch = useDispatch();
     const selectedCategory = useSelector((state) => state.viewcharts.selectedCategory);
     const [showResetButton, setShowResetButton] = useState(false); // State to show/hide the reset button
@@ -152,8 +152,45 @@ const Scatter = ({ categories = [], values = [], aggregation = "Aggregation", x_
     }];
 
     return (
-        <div className="chart-container" style={{ position: 'relative', width: '100%' }}>
-            <ResizableBox width={300} height={300} minConstraints={[300, 300]} maxConstraints={[1200, 800]}>
+        // <div className="chart-container" style={{ position: 'relative', width: '100%' }}>
+        //     <ResizableBox width={300} height={300} minConstraints={[300, 300]} maxConstraints={[1200, 800]}>
+        //         <Chart
+        //             options={options}
+        //             series={series}
+        //             type="scatter"
+        //             width="100%"
+        //             height="100%"
+        //         />
+        //     </ResizableBox>
+        // </div>
+                    <div
+                      className="chart-container"
+                      style={{
+                        position: "relative",
+                        width: "100%",
+                        height: "100%",  // Ensure it takes full height of the parent
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center"
+                      }}
+                    >
+                      <ResizableBox
+                        width={width}
+                        height={height}
+                        minConstraints={[300, 300]}
+                        maxConstraints={[1200, 800]}
+                      >
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            border: "none",  // Remove extra border
+                            borderRadius: "8px",
+                            padding: "10px",
+                            background: "#fff",
+                            overflow: "hidden",  // Ensure no overflow
+                          }}
+                        >
                 <Chart
                     options={options}
                     series={series}
@@ -161,32 +198,9 @@ const Scatter = ({ categories = [], values = [], aggregation = "Aggregation", x_
                     width="100%"
                     height="100%"
                 />
-            </ResizableBox>
-
-            {/* <button 
-                onClick={handleFilterToggle} 
-                style={{ 
-                    position: 'absolute',
-                    top: '10px',
-                    right: '10px',
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    padding: '8px', 
-                    borderRadius: '50%', 
-                    background: '#1976d2', 
-                    border: 'none', 
-                    color: '#fff', 
-                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)', 
-                    cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.background = '#75ACE2'}
-                onMouseLeave={(e) => e.currentTarget.style.background = '#1976d2'}
-            >
-                {isFilterActive ? 
-                    <FilterAltIcon style={{ fontSize: '20px', marginRight: '5px', color: '#00000' }} onClick={handleReset} /> : 
-                    <FilterAltOffIcon style={{ fontSize: '20px', marginRight: '5px', color: '#00000' }}  />} 
-            </button> */}
-        </div>
+                        </div>
+                      </ResizableBox>
+                    </div>
     );
 };
 

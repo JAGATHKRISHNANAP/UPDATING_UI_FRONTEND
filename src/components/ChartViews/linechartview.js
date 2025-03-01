@@ -12,7 +12,7 @@ import CustomToolTip from "../charts/customToolTip";
 import { Modal, Box, TextField, Button, MenuItem, FormControl, InputLabel, Select } from "@mui/material";
 // import OnlinePredictionIcon from '@mui/icons-material/OnlinePrediction';
 
-const LineChart = ({ categories, values, aggregation,  x_axis, y_axis, otherChartCategories = []  }) => {
+const LineChart = ({width = 300, height = 300, categories, values, aggregation,  x_axis, y_axis, otherChartCategories = []  }) => {
     const dispatch = useDispatch();
     const lineColor = useSelector((state) => state.chartColor.chartColor);
     // const xAxis = useSelector((state) => state.chart.xAxis);
@@ -227,7 +227,7 @@ const LineChart = ({ categories, values, aggregation,  x_axis, y_axis, otherChar
 
     return (
         <div className="app">
-            <div className="row">
+            {/* <div className="row">
                 <div className="line-chart">
                     <ResizableBox width={300} height={300} minConstraints={[300, 300]} maxConstraints={[800, 600]} onContextMenu={handleContextMenu}>
                     <div className="chart-title">{customHeadings}</div>
@@ -240,6 +240,44 @@ const LineChart = ({ categories, values, aggregation,  x_axis, y_axis, otherChar
                         />
                     </ResizableBox>
                 </div>
+            </div> */}
+                  <div
+              className="chart-container"
+              style={{
+                position: "relative",
+                width: "100%",
+                height: "100%",  // Ensure it takes full height of the parent
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
+              }}
+            >
+              <ResizableBox
+                width={width}
+                height={height}
+                minConstraints={[300, 300]}
+                maxConstraints={[1200, 800]}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    border: "none",  // Remove extra border
+                    borderRadius: "8px",
+                    padding: "10px",
+                    background: "#fff",
+                    overflow: "hidden",  // Ensure no overflow
+                  }}
+                >
+                                          <Chart
+                            options={options}
+                            series={series}
+                            type="line"
+                            width="100%"
+                            height="100%"
+                        />
+                </div>
+              </ResizableBox>
             </div>
 
             {/* Button to trigger prediction */}

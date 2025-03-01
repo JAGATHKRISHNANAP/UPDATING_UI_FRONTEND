@@ -872,18 +872,638 @@
 
 
 
+// import React, { useState, useEffect, useRef } from 'react';
+// import './resizable.css';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import { IconButton } from '@mui/material';
+// import VisibilityIcon from '@mui/icons-material/Visibility';
+// import BarChart from '../ChartViews/barchartView';
+
+
+
+
+// import PolarAreaChart from '../ChartViews/polarAreaChartView';
+// // import BarChart from '../ChartViews/barchartView';
+// import PieChart from '../ChartViews/piechartView';
+// import LineChart from '../ChartViews/linechartview';
+// import ScatterChart from '../ChartViews/scatterChartView';
+// import AreaChart from '../ChartViews/areaChartView';
+// import AnimatedTreemap from '../ChartViews/animatedTreeMapView';
+// import DualAxisChart from '../ChartViews/duelAxisChartView';
+// import HierarchialBarChart from '../ChartViews/hierarchialBarChartView';
+// import MapChart from '../ChartViews/mapChartView';
+// import SingleValueChart from '../ChartViews/singleValueChartView';
+
+
+
+
+// import SampleAiTestChart  from '../ChartViews/sampleAiTestChartView'; 
+// import AiMlChartData from '../ChartViews/AiMLChartsView';
+// import TreeHierarchyView from '../ChartViews/treeHierarchyView'; 
+
+
+// import { useDispatch, useSelector } from 'react-redux';
+// import {sendChartData ,sendChartDetails} from "../../utils/api";
+// import { addTextChart, addChartData, removeChartData, updateSelectedCategory,updateDuealAxisChartData } from '../../features/ViewChartSlice/viewChartSlice';
+
+// const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePosition }) => {
+//   const [tableModalOpen, setTableModalOpen] = useState(false);
+//   const [width, setWidth] = useState(data.width);
+//   const [height, setHeight] = useState(data.height);
+
+
+//   const [result, setResult] = useState(null);
+//   const [hierarchy,setHierarchy]=useState(null);
+//   const [hierarchyData,setHierarchyData]=useState(null);
+//   const [aiChartData,setAiChartData]=useState(null);
+//   const [aiMlChartData,setAiMLChartData]=useState(null);
+//   const [fetchedData, setFetchedData] = useState(null);
+
+
+//   const dispatch = useDispatch();
+//   const dataFetchedRef = useRef(false);
+
+
+
+
+  
+  
+//   const isDashboard = context === "dashboard";
+//   const minWidth = isDashboard ? 200 : 800;
+//   const minHeight = isDashboard ? 50 : 300;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   const chart_id = data[0];
+//   const text_y_xis = data[2];
+//   const text_y_aggregate = data[4];
+//   const text_y_table = [data[1]];
+//   const text_y_database = data[10];
+//   const heading = data[7];
+//   const chartDataFromStore = useSelector((state) =>
+//     state.viewcharts.charts.find((chart) => chart.chart_id === chart_id)
+//   );
+//   // console.log("--------------------------------------------------------------------------------------",chartDataFromStore.series1);
+//   const sendDataToBackend = async () => {
+//     try {
+//       if (dataFetchedRef.current) return; // Prevent re-fetching
+//       dataFetchedRef.current = true; // Set the flag to prevent duplicate fetches
+//       const response = await sendChartData(chart_id, text_y_xis, text_y_database, text_y_table, text_y_aggregate);
+//       const fetchedData = response.data;
+//       const textChartData = { fetchedData, chart_id };
+//       dispatch(addTextChart(textChartData));
+//       setResult(fetchedData.total_x_axis);
+//       setFetchedData(fetchedData);
+      
+//     } catch (error) {
+//       console.error("Error sending data to backend", error);
+//     }
+//   };
+  
+
+//   // useEffect(() => {
+//   //   updateChartDetails(data.chartName, { });
+//   //   sendChartDetailsToBackend();
+//   //   sendDataToBackend();
+//   // }, []);
+
+//   useEffect(() => {
+//     updateChartDetails(data.chartName, { width, height });
+//     sendChartDetailsToBackend();
+//     sendDataToBackend();
+//   }, [width, height]);
+
+//   const handleResize = (e, { size }) => {
+//     if (size.width !== width || size.height !== height) {
+//       setWidth(size.width);
+//       setHeight(size.height);
+//       updateChartDetails(data.chartName, { width: size.width, height: size.height });
+//     }
+//   };
+
+//   const sendChartDetailsToBackend = async () => {
+//     try {
+//       // const response = await sendChartDetails(data);
+//       // const { categories, values, series1, series2 } = response;
+//       const response = await sendChartDetails(data);
+//       if (data[5] === 'treeHierarchy') {
+//         setHierarchyData(response["data frame"]);
+//         setHierarchy(response["x_axis"]);
+//       }
+//       if (data[5] === 'sampleAitestChart') {
+//         setAiChartData(response['histogram_details']);
+//       }
+//       if (data[5] === 'AiCharts') {
+//         console.log("response['histogram_details']",response['histogram_details'])
+//         setAiMLChartData(response['histogram_details']);
+//       }
+//       const { categories, values, series1, series2 } = response;
+//       if (categories) {
+//         if (values && categories.length === values.length) {
+//           const chartDataElement = {
+//             categories,
+//             values,
+//             x_axis: data[2],
+//             chart_type: data[5],
+//             chart_color: data[6],
+//             chart_id: data[0],
+//             y_axis: data[3],
+//             tableName: data[1],
+//             aggregate: data[4],
+//             filter_options: data[9],
+//             databaseName: data[10],
+//           };
+//           dispatch(addChartData(chartDataElement));
+//         } else if (series1 && series2 && categories.length === series1.length && categories.length === series2.length) {
+//           const chartDataElement = {
+//             categories,
+//             series1,
+//             series2,
+//             x_axis: data[2],
+//             chart_type: data[5],
+//             chart_id: data[0],
+//             y_axis: data[3],
+//             tableName: data[1],
+//             aggregate: data[4],
+//             filter_options: data[9],
+//             databaseName: data[10],
+//           };
+//           dispatch(addChartData(chartDataElement));
+//         }
+//       }
+//     } catch (error) {
+//       console.error('Error handling response:', error);
+//     }
+//   };
+
+
+
+
+
+//   const toggleTableModal = () => {
+//     setTableModalOpen(!tableModalOpen);
+//   };
+
+//   const handleRemove = () => {
+//     onRemove(data.chartName);
+//     onRemovePosition(data.chartName); // Remove chart position
+//     dispatch(removeChartData(data[0]));
+//     dispatch(updateSelectedCategory(null));
+//   };
+
+
+//   // const handleRemove = () => {
+//   //   onRemove(data.chartName);
+//   //   dispatch(removeChartData(data[0]));
+//   //   dispatch(updateSelectedCategory(null));
+//   // };
+
+//   // const renderChart = () => {
+//   //   switch (data[5]) {
+//   //     case 'bar':
+//   //       if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//   //         return <BarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//   //       }
+//   //       break;
+
+
+//   //     default:
+//   //       return <div>No chart available</div>;
+//   //   }
+//   //   return null;
+//   // };
+//   const renderChart = () => {
+//     switch (data[5]) {
+//       case 'bar':
+//         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//           return <BarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//         }
+//         break;
+//       case 'pie':
+//         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//           return <PieChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//         }
+//         break;
+//         case 'polarArea':
+//           if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//             return <PolarAreaChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//           }
+//           break;
+
+
+//         case 'duealChart':
+//   if (
+//     chartDataFromStore?.categories?.length > 0 &&
+//     chartDataFromStore?.series1?.length > 0 &&
+//     chartDataFromStore?.series2?.length > 0
+//   ) {
+//     return (
+//       <DualAxisChart
+//         categories={chartDataFromStore.categories}
+//         series1={chartDataFromStore.series1.map(value => parseFloat(value))}
+//         series2={chartDataFromStore.series2.map(value => parseFloat(value))}
+//         aggregation={data[4]} x_axis={data[2]}
+//         y_axis1={data[3][0]} // Set y_axis1 to the first value in data[3]
+//   y_axis2={data[3][1]} 
+//       />
+//     );
+//   }
+//   break;
+
+//       case 'line':
+//         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//           return <LineChart categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//         }
+//         break;
+//         case 'area':
+//           if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//             return <AreaChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//           }
+//           break;
+//       case 'animatedTreeChart':
+//         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//         return <AnimatedTreemap categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} />;
+//             }
+//           break;
+//       case 'sampleAitestChart':
+//         return <SampleAiTestChart data={aiChartData} />;
+
+//         case 'AiCharts':
+//           return <AiMlChartData data={aiMlChartData} />;
+//       case 'treeHierarchy':
+//         return <TreeHierarchyView x_axis={hierarchy} treeData={hierarchyData} />;
+//         // break;  
+//         case 'scatter':
+//             if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//               return <ScatterChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//             }
+//             break;
+//             case 'hierarchialBarChart':
+//               if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//                 return <HierarchialBarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} />;
+//               }
+//               break;
+//             case 'mapchart':
+//             if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//               return <MapChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//             }
+//             break;
+  
+
+        
+//       case 'singleValueChart':
+//         if (!result) {
+//           // sendDataToBackend(); // Manually trigger the fetch
+//         }
+//         return (
+//           <SingleValueChart
+//             width={width}
+//             heading={heading}
+//             result={result}
+//             fetchedData={fetchedData}
+//             handleResize={handleResize}
+//             minWidth={minWidth}
+//             minHeight={minHeight} // Pass minimum constraints
+//           />
+//         );
+//       default:
+//         return <div>No chart available</div>;
+//     }
+//     return null;
+//   };
+
+
+// return (
+//   <div>
+//       <div 
+//         className="chart-container" 
+//         style={{ width: '100%', height: '100%' }}
+//       >
+//         <div className="header">
+//           <IconButton onClick={toggleTableModal} aria-label="view">
+//             <VisibilityIcon />
+//           </IconButton>
+          
+//           <IconButton onClick={handleRemove} aria-label="delete">
+//             <DeleteIcon />
+//           </IconButton>
+//         </div>
+//         <div className="chart-area">
+//           {renderChart()}
+//         </div>
+
+//       </div>
+//   </div>
+// );
+
+// };
+
+// export default ResizableChart;
+
+
+
+
+
+
+
+
+
+//Cleaned above code below
+
+
+
+
+
+
+
+
+// import React, { useState, useEffect, useRef } from 'react';
+// import './resizable.css';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import { IconButton } from '@mui/material';
+// import VisibilityIcon from '@mui/icons-material/Visibility';
+// import BarChart from '../ChartViews/barchartView';
+// import PolarAreaChart from '../ChartViews/polarAreaChartView';
+// import PieChart from '../ChartViews/piechartView';
+// import LineChart from '../ChartViews/linechartview';
+// import ScatterChart from '../ChartViews/scatterChartView';
+// import AreaChart from '../ChartViews/areaChartView';
+// import AnimatedTreemap from '../ChartViews/animatedTreeMapView';
+// import DualAxisChart from '../ChartViews/duelAxisChartView';
+// import HierarchialBarChart from '../ChartViews/hierarchialBarChartView';
+// import MapChart from '../ChartViews/mapChartView';
+// import SingleValueChart from '../ChartViews/singleValueChartView';
+// import SampleAiTestChart  from '../ChartViews/sampleAiTestChartView'; 
+// import AiMlChartData from '../ChartViews/AiMLChartsView';
+// import TreeHierarchyView from '../ChartViews/treeHierarchyView'; 
+// import { useDispatch, useSelector } from 'react-redux';
+// import {sendChartData ,sendChartDetails} from "../../utils/api";
+// import { addTextChart, addChartData, removeChartData, updateSelectedCategory } from '../../features/ViewChartSlice/viewChartSlice';
+
+// const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePosition }) => {
+//   const [tableModalOpen, setTableModalOpen] = useState(false);
+//   const [width, setWidth] = useState(data.width);
+//   const [height, setHeight] = useState(data.height);
+//   const [result, setResult] = useState(null);
+//   const [hierarchy,setHierarchy]=useState(null);
+//   const [hierarchyData,setHierarchyData]=useState(null);
+//   const [aiChartData,setAiChartData]=useState(null);
+//   const [aiMlChartData,setAiMLChartData]=useState(null);
+//   const [fetchedData, setFetchedData] = useState(null);
+//   const dispatch = useDispatch();
+//   const dataFetchedRef = useRef(false);
+//   const isDashboard = context === "dashboard";
+//   const minWidth = isDashboard ? 200 : 800;
+//   const minHeight = isDashboard ? 50 : 300;
+//   const chart_id = data[0];
+//   const text_y_xis = data[2];
+//   const text_y_aggregate = data[4];
+//   const text_y_table = [data[1]];
+//   const text_y_database = data[10];
+//   const heading = data[7];
+//   const chartDataFromStore = useSelector((state) =>
+//     state.viewcharts.charts.find((chart) => chart.chart_id === chart_id)
+//   );
+//   const sendDataToBackend = async () => {
+//     try {
+//       if (dataFetchedRef.current) return; // Prevent re-fetching
+//       dataFetchedRef.current = true; // Set the flag to prevent duplicate fetches
+//       const response = await sendChartData(chart_id, text_y_xis, text_y_database, text_y_table, text_y_aggregate);
+//       const fetchedData = response.data;
+//       const textChartData = { fetchedData, chart_id };
+//       dispatch(addTextChart(textChartData));
+//       setResult(fetchedData.total_x_axis);
+//       setFetchedData(fetchedData);
+      
+//     } catch (error) {
+//       console.error("Error sending data to backend", error);
+//     }
+//   };
+//   useEffect(() => {
+//     updateChartDetails(data.chartName, { width, height });
+//     sendChartDetailsToBackend();
+//     sendDataToBackend();
+//   }, [width, height]);
+
+//   const handleResize = (e, { size }) => {
+//     if (size.width !== width || size.height !== height) {
+//       setWidth(size.width);
+//       setHeight(size.height);
+//       updateChartDetails(data.chartName, { width: size.width, height: size.height });
+//     }
+//   };
+
+//   const sendChartDetailsToBackend = async () => {
+//     try {
+//       const response = await sendChartDetails(data);
+//       if (data[5] === 'treeHierarchy') {
+//         setHierarchyData(response["data frame"]);
+//         setHierarchy(response["x_axis"]);
+//       }
+//       if (data[5] === 'sampleAitestChart') {
+//         setAiChartData(response['histogram_details']);
+//       }
+//       if (data[5] === 'AiCharts') {
+//         console.log("response['histogram_details']",response['histogram_details'])
+//         setAiMLChartData(response['histogram_details']);
+//       }
+//       const { categories, values, series1, series2 } = response;
+//       if (categories) {
+//         if (values && categories.length === values.length) {
+//           const chartDataElement = {
+//             categories,
+//             values,
+//             x_axis: data[2],
+//             chart_type: data[5],
+//             chart_color: data[6],
+//             chart_id: data[0],
+//             y_axis: data[3],
+//             tableName: data[1],
+//             aggregate: data[4],
+//             filter_options: data[9],
+//             databaseName: data[10],
+//           };
+//           dispatch(addChartData(chartDataElement));
+//         } else if (series1 && series2 && categories.length === series1.length && categories.length === series2.length) {
+//           const chartDataElement = {
+//             categories,
+//             series1,
+//             series2,
+//             x_axis: data[2],
+//             chart_type: data[5],
+//             chart_id: data[0],
+//             y_axis: data[3],
+//             tableName: data[1],
+//             aggregate: data[4],
+//             filter_options: data[9],
+//             databaseName: data[10],
+//           };
+//           dispatch(addChartData(chartDataElement));
+//         }
+//       }
+//     } catch (error) {
+//       console.error('Error handling response:', error);
+//     }
+//   };
+//   const toggleTableModal = () => {
+//     setTableModalOpen(!tableModalOpen);
+//   };
+
+//   const handleRemove = () => {
+//     onRemove(data.chartName);
+//     onRemovePosition(data.chartName); // Remove chart position
+//     dispatch(removeChartData(data[0]));
+//     dispatch(updateSelectedCategory(null));
+//   };
+//   const renderChart = () => {
+//     switch (data[5]) {
+//       case 'bar':
+//         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//           return <BarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//         }
+//         break;
+//       case 'pie':
+//         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//           return <PieChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//         }
+//         break;
+//         case 'polarArea':
+//           if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//             return <PolarAreaChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//           }
+//           break;
+
+
+//         case 'duealChart':
+//   if (
+//     chartDataFromStore?.categories?.length > 0 &&
+//     chartDataFromStore?.series1?.length > 0 &&
+//     chartDataFromStore?.series2?.length > 0
+//   ) {
+//     return (
+//       <DualAxisChart
+//         categories={chartDataFromStore.categories}
+//         series1={chartDataFromStore.series1.map(value => parseFloat(value))}
+//         series2={chartDataFromStore.series2.map(value => parseFloat(value))}
+//         aggregation={data[4]} x_axis={data[2]}
+//         y_axis1={data[3][0]} // Set y_axis1 to the first value in data[3]
+//   y_axis2={data[3][1]} 
+//       />
+//     );
+//   }
+//   break;
+
+//       case 'line':
+//         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//           return <LineChart categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//         }
+//         break;
+//         case 'area':
+//           if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//             return <AreaChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//           }
+//           break;
+//       case 'animatedTreeChart':
+//         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//         return <AnimatedTreemap categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} />;
+//             }
+//           break;
+//       case 'sampleAitestChart':
+//         return <SampleAiTestChart data={aiChartData} />;
+
+//         case 'AiCharts':
+//           return <AiMlChartData data={aiMlChartData} />;
+//       case 'treeHierarchy':
+//         return <TreeHierarchyView x_axis={hierarchy} treeData={hierarchyData} />;
+//         // break;  
+//         case 'scatter':
+//             if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//               return <ScatterChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//             }
+//             break;
+//             case 'hierarchialBarChart':
+//               if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//                 return <HierarchialBarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} />;
+//               }
+//               break;
+//             case 'mapchart':
+//             if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
+//               return <MapChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+//             }
+//             break;
+//       case 'singleValueChart':
+//         return (
+//           <SingleValueChart
+//             width={width}
+//             heading={heading}
+//             result={result}
+//             fetchedData={fetchedData}
+//             handleResize={handleResize}
+//             minWidth={minWidth}
+//             minHeight={minHeight} // Pass minimum constraints
+//           />
+//         );
+//       default:
+//         return <div>No chart available</div>;
+//     }
+//     return null;
+//   };
+
+
+// return (
+//   <div>
+//       <div 
+//         className="chart-container" 
+//         style={{ width: '100%', height: '100%' }}
+//       >
+//         <div className="header">
+//           <IconButton onClick={toggleTableModal} aria-label="view">
+//             <VisibilityIcon />
+//           </IconButton>
+          
+//           <IconButton onClick={handleRemove} aria-label="delete">
+//             <DeleteIcon />
+//           </IconButton>
+//         </div>
+//         <div className="chart-area">
+//           {renderChart()}
+//         </div>
+
+//       </div>
+//   </div>
+// );
+
+// };
+
+// export default ResizableChart;
+
+
+
+
+
+
+
+
 import React, { useState, useEffect, useRef } from 'react';
 import './resizable.css';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton } from '@mui/material';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+// import DeleteIcon from '@mui/icons-material/Delete';
+// import { IconButton } from '@mui/material';
+// import VisibilityIcon from '@mui/icons-material/Visibility';
 import BarChart from '../ChartViews/barchartView';
-
-
-
-
 import PolarAreaChart from '../ChartViews/polarAreaChartView';
-// import BarChart from '../ChartViews/barchartView';
 import PieChart from '../ChartViews/piechartView';
 import LineChart from '../ChartViews/linechartview';
 import ScatterChart from '../ChartViews/scatterChartView';
@@ -893,60 +1513,28 @@ import DualAxisChart from '../ChartViews/duelAxisChartView';
 import HierarchialBarChart from '../ChartViews/hierarchialBarChartView';
 import MapChart from '../ChartViews/mapChartView';
 import SingleValueChart from '../ChartViews/singleValueChartView';
-
-
-
-
 import SampleAiTestChart  from '../ChartViews/sampleAiTestChartView'; 
 import AiMlChartData from '../ChartViews/AiMLChartsView';
 import TreeHierarchyView from '../ChartViews/treeHierarchyView'; 
-
-
 import { useDispatch, useSelector } from 'react-redux';
 import {sendChartData ,sendChartDetails} from "../../utils/api";
-import { addTextChart, addChartData, removeChartData, updateSelectedCategory,updateDuealAxisChartData } from '../../features/ViewChartSlice/viewChartSlice';
+import { addTextChart, addChartData, removeChartData, updateSelectedCategory } from '../../features/ViewChartSlice/viewChartSlice';
 
-const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePosition }) => {
-  const [tableModalOpen, setTableModalOpen] = useState(false);
-  const [width, setWidth] = useState(data.width);
-  const [height, setHeight] = useState(data.height);
-
-
+const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePosition,width,height }) => {
+  // const [tableModalOpen, setTableModalOpen] = useState(false);
+  // const [width, setWidth] = useState(data.width);
+  // const [height, setHeight] = useState(data.height);
   const [result, setResult] = useState(null);
   const [hierarchy,setHierarchy]=useState(null);
   const [hierarchyData,setHierarchyData]=useState(null);
   const [aiChartData,setAiChartData]=useState(null);
   const [aiMlChartData,setAiMLChartData]=useState(null);
   const [fetchedData, setFetchedData] = useState(null);
-
-
   const dispatch = useDispatch();
   const dataFetchedRef = useRef(false);
-
-
-
-
-  
-  
   const isDashboard = context === "dashboard";
   const minWidth = isDashboard ? 200 : 800;
   const minHeight = isDashboard ? 50 : 300;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const chart_id = data[0];
   const text_y_xis = data[2];
   const text_y_aggregate = data[4];
@@ -956,7 +1544,6 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
   const chartDataFromStore = useSelector((state) =>
     state.viewcharts.charts.find((chart) => chart.chart_id === chart_id)
   );
-  // console.log("--------------------------------------------------------------------------------------",chartDataFromStore.series1);
   const sendDataToBackend = async () => {
     try {
       if (dataFetchedRef.current) return; // Prevent re-fetching
@@ -972,32 +1559,22 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
       console.error("Error sending data to backend", error);
     }
   };
-  
-
-  // useEffect(() => {
-  //   updateChartDetails(data.chartName, { });
-  //   sendChartDetailsToBackend();
-  //   sendDataToBackend();
-  // }, []);
-
   useEffect(() => {
-    updateChartDetails(data.chartName, { width, height });
+    updateChartDetails(data.chartName);
     sendChartDetailsToBackend();
     sendDataToBackend();
-  }, [width, height]);
+  }, []);
 
-  const handleResize = (e, { size }) => {
-    if (size.width !== width || size.height !== height) {
-      setWidth(size.width);
-      setHeight(size.height);
-      updateChartDetails(data.chartName, { width: size.width, height: size.height });
-    }
-  };
+  // const handleResize = (e, { size }) => {
+  //   if (size.width !== width || size.height !== height) {
+  //     setWidth(size.width);
+  //     setHeight(size.height);
+  //     updateChartDetails(data.chartName, { width: size.width, height: size.height });
+  //   }
+  // };
 
   const sendChartDetailsToBackend = async () => {
     try {
-      // const response = await sendChartDetails(data);
-      // const { categories, values, series1, series2 } = response;
       const response = await sendChartDetails(data);
       if (data[5] === 'treeHierarchy') {
         setHierarchyData(response["data frame"]);
@@ -1048,58 +1625,31 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
       console.error('Error handling response:', error);
     }
   };
-
-
-
-
-
-  const toggleTableModal = () => {
-    setTableModalOpen(!tableModalOpen);
-  };
-
-  const handleRemove = () => {
-    onRemove(data.chartName);
-    onRemovePosition(data.chartName); // Remove chart position
-    dispatch(removeChartData(data[0]));
-    dispatch(updateSelectedCategory(null));
-  };
-
+  // const toggleTableModal = () => {
+  //   setTableModalOpen(!tableModalOpen);
+  // };
 
   // const handleRemove = () => {
   //   onRemove(data.chartName);
+  //   onRemovePosition(data.chartName); // Remove chart position
   //   dispatch(removeChartData(data[0]));
   //   dispatch(updateSelectedCategory(null));
-  // };
-
-  // const renderChart = () => {
-  //   switch (data[5]) {
-  //     case 'bar':
-  //       if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-  //         return <BarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
-  //       }
-  //       break;
-
-
-  //     default:
-  //       return <div>No chart available</div>;
-  //   }
-  //   return null;
   // };
   const renderChart = () => {
     switch (data[5]) {
       case 'bar':
         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-          return <BarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+          return <BarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} width={width} height={height}/>;
         }
         break;
       case 'pie':
         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-          return <PieChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+          return <PieChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} width={width} height={height} />;
         }
         break;
         case 'polarArea':
           if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-            return <PolarAreaChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+            return <PolarAreaChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} width={width} height={height} />;
           }
           break;
 
@@ -1118,6 +1668,7 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
         aggregation={data[4]} x_axis={data[2]}
         y_axis1={data[3][0]} // Set y_axis1 to the first value in data[3]
   y_axis2={data[3][1]} 
+  width={width} height={height}
       />
     );
   }
@@ -1125,17 +1676,17 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
 
       case 'line':
         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-          return <LineChart categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+          return <LineChart categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} width={width} height={height} />;
         }
         break;
         case 'area':
           if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-            return <AreaChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+            return <AreaChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} width={width} height={height} />;
           }
           break;
       case 'animatedTreeChart':
         if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-        return <AnimatedTreemap categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} />;
+        return <AnimatedTreemap categories={chartDataFromStore.categories} values={chartDataFromStore.values} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} width={width} height={height}/>;
             }
           break;
       case 'sampleAitestChart':
@@ -1148,35 +1699,30 @@ const ResizableChart = ({ data, context, onRemove, updateChartDetails,onRemovePo
         // break;  
         case 'scatter':
             if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-              return <ScatterChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+              return <ScatterChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} width={width} height={height} />;
             }
             break;
             case 'hierarchialBarChart':
               if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-                return <HierarchialBarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} />;
+                return <HierarchialBarChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} chartColor={data[6]} width={width} height={height}/>;
               }
               break;
             case 'mapchart':
             if (chartDataFromStore?.categories?.length > 0 && chartDataFromStore?.values?.length > 0) {
-              return <MapChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3]} />;
+              return <MapChart categories={chartDataFromStore.categories} values={chartDataFromStore.values.map(value => parseFloat(value))} aggregation={data[4]} x_axis={data[2]} y_axis={data[3] } width={width} height={height}/>;
             }
             break;
-  
-
-        
       case 'singleValueChart':
-        if (!result) {
-          // sendDataToBackend(); // Manually trigger the fetch
-        }
         return (
           <SingleValueChart
-            width={width}
+            // width={width}
             heading={heading}
             result={result}
             fetchedData={fetchedData}
-            handleResize={handleResize}
+            // handleResize={handleResize}
             minWidth={minWidth}
             minHeight={minHeight} // Pass minimum constraints
+            width={width} height={height}
           />
         );
       default:
@@ -1190,9 +1736,9 @@ return (
   <div>
       <div 
         className="chart-container" 
-        style={{ width: '100%', height: '100%' }}
+        // style={{ width: '100%', height: '100%' }}
       >
-        <div className="header">
+        {/* <div className="header">
           <IconButton onClick={toggleTableModal} aria-label="view">
             <VisibilityIcon />
           </IconButton>
@@ -1200,7 +1746,7 @@ return (
           <IconButton onClick={handleRemove} aria-label="delete">
             <DeleteIcon />
           </IconButton>
-        </div>
+        </div> */}
         <div className="chart-area">
           {renderChart()}
         </div>
@@ -1212,6 +1758,34 @@ return (
 };
 
 export default ResizableChart;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
